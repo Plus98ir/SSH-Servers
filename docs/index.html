@@ -10,6 +10,12 @@
     if (window.matchMedia('(display-mode: standalone)').matches) toApp = true;
   } catch (e) {}
   if (toApp) location.replace('app/' + h);
+  // remove the service worker an old version registered on this path
+  try {
+    navigator.serviceWorker && navigator.serviceWorker.getRegistrations().then(function (rs) {
+      rs.forEach(function (r) { if (!/\/app\/$/.test(r.scope)) r.unregister(); });
+    });
+  } catch (e) {}
 })();
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
