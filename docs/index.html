@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8">
 <script>
-// phone users: sync links, the installed app and returning phones go straight to the app
+// sync links (old QR codes) and the installed web app go straight to the web app; everyone else sees this page
 (function () {
   var h = location.hash, toApp = /[#&]g=/.test(h);
   try {
     if (window.matchMedia('(display-mode: standalone)').matches) toApp = true;
-    if (localStorage.getItem('ssh.sync') && matchMedia('(pointer:coarse)').matches) toApp = true;
   } catch (e) {}
   if (toApp) location.replace('app/' + h);
 })();

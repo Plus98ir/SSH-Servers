@@ -376,6 +376,13 @@ window.addEventListener('online', () => syncSoon(200));
     if (p) { sc = p; store.set('sync', sc); }
   }
   render();
+  if (/android/i.test(navigator.userAgent)) {
+    const b = $('#andBanner');
+    b.innerHTML = lang === 'fa'
+      ? '<div><b>اپ اندروید آماده‌ست</b><span>ترمینال SSH داخلی، بدون نیاز به Termius</span></div><i>دانلود ←</i>'
+      : '<div><b>The Android app is here</b><span>Built-in SSH terminal, no Termius needed</span></div><i>Download →</i>';
+    b.style.display = 'flex';
+  }
   if (sc) runSync();
   if ('serviceWorker' in navigator) try { navigator.serviceWorker.register('sw.js'); } catch (e) {}
 })();
