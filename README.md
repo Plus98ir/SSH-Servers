@@ -55,7 +55,7 @@ TA53aFyGNfSAcrCaJi9QmA9x5W47nPJcf7
 
 The server list (name, address, port, user and color) is stored in a **secret Gist on your own GitHub account**, encrypted with AES-256-GCM. There's no server of ours in between, and every user keeps their own data on their own GitHub. Passwords and SSH keys never leave the PC.
 
-1. On the PC press the **sync button** (top bar). Create a GitHub token (only the `gist` box is needed) and paste it.
+1. On the PC press the **sync button** (top bar), then **Sign in with GitHub**. GitHub opens in the browser: enter the short code shown in the app and press Authorize. That's it, no token to create. A personal token with the `gist` scope still works too.
 2. A QR code appears. Scan it with your phone camera. The phone app opens and is connected.
 3. To add another PC, paste the same **sync link** into its sync box instead of a token.
 
@@ -65,7 +65,7 @@ No PC? Paste a GitHub token on the phone and start there. You can add the PC lat
 
 > [!IMPORTANT]
 > The sync link holds your token and the encryption key. It works like a password, so don't share it.<br>
-> The token only needs the `gist` scope. You can revoke it any time in GitHub → Settings → Developer settings.
+> The app only asks for the `gist` scope. You can revoke access any time in GitHub → Settings → Applications.
 
 ## Build
 

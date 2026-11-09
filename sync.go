@@ -537,7 +537,7 @@ func openBrowser(u string) {
 // ---------------------------------------------------------------- "Sign in with GitHub" (OAuth device flow, no secret needed)
 
 // githubClientID is the public Client ID of the OAuth App (device flow enabled). Empty = button hidden.
-const githubClientID = ""
+const githubClientID = "Ov23lixhLgGnIlMRameI"
 
 var (
 	loginMu    sync.Mutex
