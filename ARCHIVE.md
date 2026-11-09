@@ -1,6 +1,7 @@
 # SSH Servers — ARCHIVE.md
 
 ## 2026-11-09
+- Site fix: removed the "returning phone → web app" redirect; docs/sw.js is now a kill switch that unregisters the old root service worker (verified on the A55: landing page with both download buttons). Android banner inside the web app. Repo description/topics + site descriptions.json updated for the Android app.
 - Released Android 1.0.0 (tag android-v1.0.0, signed SSH-Servers.apk); calmer gesture swipes (axis lock). Site + README: Download for Android.
 - Android app (mobile/): built-in SSH terminal tested on the A55 (password + passwordless OK). Terminal: floating session bar (back / name+close / + / grid), key row, sticky ctrl, gesture mode (swipe = arrows), double tap = Tab, one-press Enter. Home: ⋮ menu (Add server, tile/list view, sync, settings).
 - Update check: Windows app self-updates from the latest `v*` release (footer version = manual check, pill when newer, `appVersion` in update.go); Android prompts from `android-v*` releases (Settings → Check for updates). Bump `appVersion` / pubspec version only after asking.
