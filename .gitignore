@@ -1,0 +1,4 @@
+servers.json
+servers.json.tmp
+*.exe
+_qr/

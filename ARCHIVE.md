@@ -1,0 +1,9 @@
+# SSH Servers — ARCHIVE.md
+
+## 2026-11-09
+- Built server-list sync PC ↔ phone: sync.go (encrypted secret Gist, newest-wins merge, QR/link, token or sync-link setup, GitHub device-flow sign-in ready), sync button + dialog in ui.html, phone PWA in docs/ (cards → ssh://, add/edit/delete/reorder, FA/EN, offline, start from phone with a token). Go↔JS crypto + merge tested; exe built.
+- Tested on a rebuilt server: new host key accepted from the card, connects. ✔
+
+## 2026-10-27
+- Rebuilt the app's Go source (old source was lost; UI recovered from the old exe) and saved it here.
+- Changed host key (rebuilt server) is now handled in the app: fingerprint dialog, one-click accept, optional per-server auto-accept, auto prompt to reinstall the key when key login broke after a rebuild. Works for single connect, split/tabs, key install and run-on-many.
