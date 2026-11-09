@@ -42,6 +42,52 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
     }
   }
 
+  /// gesture mode: left/right moves the cursor between characters, up/down walks the command history.
+  /// Each swipe sticks to the axis it started on; steps are wide so it never races.
+  int _axis = 0; // 0 undecided, 1 horizontal, 2 vertical
+  void _onPan(DragUpdateDetails d) {
+    _pan += d.delta;
+    if (_axis == 0) {
+      if (_pan.distance < 14) return;
+      _axis = _pan.dx.abs() >= _pan.dy.abs() ? 1 : 2;
+      _pan = Offset.zero;
+      return;
+    }
+    const stepX = 36.0, stepY = 60.0;
+    if (_axis == 1) {
+      while (_pan.dx.abs() >= stepX) {
+        s.term.keyInput(_pan.dx > 0 ? TerminalKey.arrowRight : TerminalKey.arrowLeft);
+        _pan = Offset(_pan.dx - stepX * _pan.dx.sign, 0);
+        HapticFeedback.selectionClick();
+      }
+    } else {
+      while (_pan.dy.abs() >= stepY) {
+        s.term.keyInput(_pan.dy > 0 ? TerminalKey.arrowDown : TerminalKey.arrowUp);
+        _pan = Offset(0, _pan.dy - stepY * _pan.dy.sign);
+        HapticFeedback.selectionClick();
+      }
+    }
+  }
+
+  DateTime _lastTap = DateTime(0);
+  Offset _downAt = Offset.zero, _lastTapAt = Offset.zero;
+
+  /// double tap anywhere on the terminal = Tab (raw pointer events, so the terminal's own gestures keep working)
+  void _pointerDown(PointerDownEvent e) => _downAt = e.position;
+  void _pointerUp(PointerUpEvent e) {
+    if ((e.position - _downAt).distance > 18) return; // a drag, not a tap
+    final now = DateTime.now();
+    if (now.difference(_lastTap).inMilliseconds < 320 && (e.position - _lastTapAt).distance < 40) {
+      _tc.clearSelection();
+      s.term.keyInput(TerminalKey.tab);
+      HapticFeedback.selectionClick();
+      _lastTap = DateTime(0);
+    } else {
+      _lastTap = now;
+      _lastTapAt = e.position;
+    }
+  }
+
   /// gesture mode: left/right moves the cursor between characters, up/down walks the command history
   void _onPan(DragUpdateDetails d) {
     _pan += d.delta;
@@ -302,7 +348,10 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
                   Positioned.fill(
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onPanStart: (_) => _pan = Offset.zero,
+                      onPanStart: (_) {
+                        _pan = Offset.zero;
+                        _axis = 0;
+                      },
                       onPanUpdate: _onPan,
                       onTap: () => _focus.requestFocus(),
                     ),
