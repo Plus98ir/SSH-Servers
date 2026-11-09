@@ -1,6 +1,8 @@
 # SSH Servers — ARCHIVE.md
 
 ## 2026-11-09
+- Android app (mobile/): built-in SSH terminal tested on the A55 (password + passwordless OK). Terminal: floating session bar (back / name+close / + / grid), key row, sticky ctrl, gesture mode (swipe = arrows), double tap = Tab, one-press Enter. Home: ⋮ menu (Add server, tile/list view, sync, settings).
+- Update check: Windows app self-updates from the latest `v*` release (footer version = manual check, pill when newer, `appVersion` in update.go); Android prompts from `android-v*` releases (Settings → Check for updates). Bump `appVersion` / pubspec version only after asking.
 - Website: corenetbase.com/SSH-Servers/ is now a bilingual landing/download page; phone app moved to /SSH-Servers/app/ (syncPage updated; old QR links redirect).
 - Auto sync every minute (PC + phone) on top of open/after-change/manual; FA/EN sync guide in the PC sync dialog and on the phone (setup box + settings); phone: "Sign in with GitHub" via /ssh-auth/ bridge (worker/ssh-auth.js, not deployed yet), sync button jumps to the setup box when not connected.
 - GitHub OAuth App "SSH Servers" (owner Plus98ir, id 4003993, device flow on, non-expiring tokens) → Client ID in sync.go; "Sign in with GitHub" live on the PC.
