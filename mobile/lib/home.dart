@@ -21,15 +21,19 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Sess.changes.addListener(_re);
+    AppState.I.addListener(_re);
   }
 
   @override
   void dispose() {
     Sess.changes.removeListener(_re);
+    AppState.I.removeListener(_re);
     super.dispose();
   }
 
-  void _re() => setState(() {});
+  void _re() {
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
