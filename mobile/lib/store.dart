@@ -16,7 +16,7 @@ class AppState extends ChangeNotifier {
   AppState._();
 
   late SharedPreferences _p;
-  final _sec = const FlutterSecureStorage(aOptions: AndroidOptions(encryptedSharedPreferences: true));
+  final _sec = const FlutterSecureStorage();
 
   SyncDoc doc = SyncDoc();
   SyncCfg? sync;
