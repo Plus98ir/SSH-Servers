@@ -58,13 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 240, mainAxisSpacing: 10, crossAxisSpacing: 10, childAspectRatio: 1.05),
-                  delegate: SliverChildBuilderDelegate(
-                    (c, i) => i < list.length ? _card(c, list[i]) : _addCard(c),
-                    childCount: list.length + 1,
-                  ),
-                ),
+                sliver: st.listView
+                    ? SliverList.separated(
+                        itemCount: list.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemBuilder: (c, i) => _row(c, list[i]),
+                      )
+                    : SliverGrid(
+                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 240, mainAxisSpacing: 10, crossAxisSpacing: 10, childAspectRatio: 1.05),
+                        delegate: SliverChildBuilderDelegate((c, i) => _card(c, list[i]), childCount: list.length),
+                      ),
               ),
               if (list.isEmpty)
                 SliverToBoxAdapter(
@@ -112,7 +115,37 @@ class _HomeScreenState extends State<HomeScreen> {
           () => openSync(context),
         ),
         const SizedBox(width: 8),
-        _iconBtn(const Icon(Icons.settings_outlined, size: 20), () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
+        Material(
+          color: cPanel,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: cLine)),
+          child: SizedBox(
+            width: 42,
+            height: 42,
+            child: PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert_rounded, size: 20),
+              color: const Color(0xFF1B2029),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: cLine)),
+              onSelected: (v) {
+                switch (v) {
+                  case 'add':
+                    editServer(context, null);
+                  case 'view':
+                    st.setListView(!st.listView);
+                  case 'sync':
+                    openSync(context);
+                  case 'settings':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                }
+              },
+              itemBuilder: (_) => [
+                _mi('add', Icons.add_rounded, t('addServer')),
+                _mi('view', st.listView ? Icons.grid_view_rounded : Icons.view_agenda_outlined, st.listView ? t('viewTiles') : t('viewList')),
+                _mi('sync', Icons.sync_rounded, t('sync')),
+                _mi('settings', Icons.settings_outlined, t('settings')),
+              ],
+            ),
+          ),
+        ),
       ]),
     );
   }
@@ -223,24 +256,50 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _addCard(BuildContext context) => Material(
-        color: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: cLineH)),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(18),
-          onTap: () => editServer(context, null),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+  PopupMenuItem<String> _mi(String v, IconData i, String label) => PopupMenuItem(
+        value: v,
+        child: Row(children: [Icon(i, size: 20, color: cMuted), const SizedBox(width: 12), Text(label)]),
+      );
+
+  Widget _row(BuildContext context, Server s) {
+    final c = hexColor(s.color);
+    final keyOk = AppState.I.keyOK[s.id] == true;
+    return Material(
+      color: cCard,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: cLine)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () => openTerminal(context, s),
+        onLongPress: () => _menu(context, s),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 4, 10),
+          child: Row(children: [
             Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(color: Colors.white.withValues(alpha: .05), borderRadius: BorderRadius.circular(14)),
-              child: const Icon(Icons.add, color: cMuted),
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(color: c, borderRadius: BorderRadius.circular(12)),
+              child: Center(
+                child: Text(s.name.isEmpty ? '?' : s.name.characters.first.toUpperCase(),
+                    style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w700)),
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(t('newServer'), style: const TextStyle(color: cMuted)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Row(children: [
+                  Flexible(child: Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
+                  if (keyOk) ...[const SizedBox(width: 6), const Icon(Icons.key_rounded, size: 14, color: cAccent)],
+                ]),
+                Text(s.addr, maxLines: 1, overflow: TextOverflow.ellipsis, textDirection: TextDirection.ltr,
+                    style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: cMuted)),
+              ]),
+            ),
+            IconButton(icon: const Icon(Icons.more_horiz, color: cDim), onPressed: () => _menu(context, s)),
           ]),
         ),
-      );
+      ),
+    );
+  }
 
   void _menu(BuildContext context, Server s) {
     final st = AppState.I;

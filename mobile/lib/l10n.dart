@@ -6,7 +6,11 @@ const _s = <String, List<String>>{
   'title': ['سرورهای SSH', 'SSH Servers'],
   'subtitle': ['روی سرور بزن تا وصل بشی', 'Tap a server to connect'],
   'newServer': ['سرور جدید', 'New server'],
-  'empty': ['هنوز سروری نداری. با + اضافه کن یا سینک رو روشن کن.', 'No servers yet. Add one with + or turn on sync.'],
+  'empty': ['هنوز سروری نداری. از منوی ⋮ «افزودن سرور» رو بزن یا سینک رو روشن کن.', 'No servers yet. Use ⋮ → “Add server”, or turn on sync.'],
+  'addServer': ['افزودن سرور', 'Add server'],
+  'viewTiles': ['نمایش کاشی', 'Tile view'],
+  'viewList': ['نمایش ستونی', 'List view'],
+  'gestureOn': ['حالت ژست: بکش برای فلش‌ها', 'Gesture mode: swipe for arrows'],
   'edit': ['ویرایش', 'Edit'],
   'del': ['حذف', 'Delete'],
   'delQ': ['«{n}» حذف بشه؟ از بقیهٔ دستگاه‌ها هم حذف می‌شه.', 'Delete “{n}”? It is removed from your other devices too.'],
@@ -94,12 +98,12 @@ const _s = <String, List<String>>{
     '۱. سرورهات رو با + اضافه کن، یا سینک رو روشن کن تا لیست برنامهٔ ویندوز بیاد.\n'
         '۲. سینک: «ورود با GitHub» ← کد رو توی GitHub بزن ← Authorize. اگه روی کامپیوتر قبلاً روشنش کردی، به جاش QR برنامهٔ ویندوز رو اسکن کن.\n'
         '۳. روی کارت سرور بزن تا ترمینال باز بشه. بار اول پسورد می‌پرسه؛ تیک «ورود بدون رمز» رو بذار تا دفعه‌های بعد پسورد نخواد.\n'
-        '۴. نوار پایین ترمینال: Esc، Tab، Ctrl+C و فلش‌ها. با دکمهٔ برگشت سشن باز می‌مونه و از بالای لیست برمی‌گردی بهش.\n'
+        '۴. نوار پایین ترمینال: Ctrl+C، فلش‌ها، ctrl چسبنده و paste. دکمهٔ ✥ حالت ژست رو روشن می‌کنه: روی ترمینال به چپ/راست بکش تا مکان‌نما جابه‌جا بشه، بالا/پایین برای دستورهای قبلی. دوبار ضربه روی ترمینال = Tab. با دکمهٔ برگشت سشن باز می‌مونه و از بالای لیست برمی‌گردی بهش.\n'
         '۵. سینک خودکاره: موقع باز کردن، بعد از هر تغییر و هر ۱ دقیقه. همیشه آخرین تغییر برنده‌ست.',
     '1. Add your servers with +, or turn on sync to get the Windows app’s list.\n'
         '2. Sync: “Sign in with GitHub” → enter the code on GitHub → Authorize. If sync is already on in the PC app, scan its QR instead.\n'
         '3. Tap a server card to open the terminal. The first time it asks for the password; tick “Passwordless next time” so it won’t ask again.\n'
-        '4. Terminal bottom bar: Esc, Tab, Ctrl+C and arrows. Back keeps the session open; return to it from the top of the list.\n'
+        '4. Terminal key bar: Ctrl+C, arrows, sticky ctrl and paste. The ✥ button turns on gesture mode: swipe left/right on the terminal to move the cursor, up/down for previous commands. Double tap on the terminal = Tab. Back keeps the session open; return to it from the top of the list.\n'
         '5. Sync is automatic: on open, after every change and every minute. The newest change always wins.'
   ],
   'support': ['حمایت', 'Support'],
