@@ -1,6 +1,7 @@
 # SSH Servers — ARCHIVE.md
 
 ## 2026-11-09
+- Auto sync every minute (PC + phone) on top of open/after-change/manual; FA/EN sync guide in the PC sync dialog and on the phone (setup box + settings); phone: "Sign in with GitHub" via /ssh-auth/ bridge (worker/ssh-auth.js, not deployed yet), sync button jumps to the setup box when not connected.
 - GitHub OAuth App "SSH Servers" (owner Plus98ir, id 4003993, device flow on, non-expiring tokens) → Client ID in sync.go; "Sign in with GitHub" live on the PC.
 - Published: public repo Plus98ir/SSH-Servers, Pages from /docs (https://corenetbase.com/SSH-Servers/), cover SSH-Servers.png, README EN+FA, release v1.0.0 (SSH.Servers.exe), site descriptions.json entry. New exe installed to K: (old kept as "SSH Servers.old.exe").
 - Built server-list sync PC ↔ phone: sync.go (encrypted secret Gist, newest-wins merge, QR/link, token or sync-link setup, GitHub device-flow sign-in ready), sync button + dialog in ui.html, phone PWA in docs/ (cards → ssh://, add/edit/delete/reorder, FA/EN, offline, start from phone with a token). Go↔JS crypto + merge tested; exe built.

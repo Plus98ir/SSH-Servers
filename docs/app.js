@@ -15,17 +15,37 @@ const L = {
     copied: 'کپی شد', openFail: 'اپ SSH باز نشد؟ دستور کپی شد؛ توی اپ SSH خودت پیستش کن.',
     setTitle: 'تنظیمات', lang: 'زبان', sync: 'سینک', syOn: 'سینک روشنه · آخرین سینک: {n}', syOff: 'سینک خاموشه',
     syNow: 'همین الان سینک کن', syStop: 'قطع سینک روی این گوشی', syStopQ: 'سینک روی این گوشی قطع بشه؟ لیست همین‌جا می‌مونه.',
-    setupH: 'وصل کردن به برنامهٔ کامپیوتر',
+    setupH: 'روشن کردن سینک',
     setupP: 'توی برنامهٔ SSH Servers روی کامپیوتر، دکمهٔ سینک (بالا) رو بزن و QR رو با دوربین گوشی اسکن کن. اگه اسکن نمی‌شه، «لینک سینک» رو کپی کن، برای خودت بفرست و اینجا بذار:',
     linkPh: 'لینک سینک یا توکن GitHub', connect: 'وصل کن', badLink: 'این نه لینک سینک درسته، نه توکن GitHub',
     noPc: 'کامپیوتر نداری؟ با یه توکن GitHub (فقط تیک gist) از همین گوشی شروع کن:', makeToken: 'ساخت توکن ↗',
-    exists: 'روی این حساب GitHub قبلاً سینک ساخته شده. «لینک سینک» رو از دستگاه دیگه بیار و اینجا بذار، یا از نو بساز (لیست این گوشی جای قبلی رو می‌گیره).', restart: 'از نو بساز',
+    exists: 'روی این حساب GitHub قبلاً سینک ساخته شده. QR دستگاه دیگه (بخش سینک) رو اسکن کن یا «لینک سینک»ش رو اینجا بذار، یا از نو بساز (لیست این گوشی جای قبلی رو می‌گیره).', restart: 'از نو بساز',
     myLink: 'لینک سینک (برای اضافه کردن دستگاه دیگه؛ مثل رمزه، به کسی نده):', copy: 'کپی', support: 'حمایت',
     synced: 'سینک شد', got: 'لیست از دستگاه دیگه به‌روز شد', busy: 'در حال سینک…',
     eAuth: 'توکن GitHub قبول نشد (منقضی شده یا پاک شده). لینک سینک جدید رو از کامپیوتر بگیر.',
     eNotFound: 'فایل سینک روی GitHub پیدا نشد.', eKey: 'کلید سینک با فایل نمی‌خونه؛ لینک سینک رو دوباره از کامپیوتر بگیر.',
     eNet: 'به GitHub وصل نشد؛ تغییرات روی گوشی می‌مونه و دفعهٔ بعد سینک می‌شه.',
     never: 'هنوز نه', justNow: 'همین الان', minAgo: '{n} دقیقه پیش',
+
+    ghLogin: 'ورود با GitHub', ghCode: 'این کد رو توی صفحهٔ GitHub وارد کن و Authorize رو بزن (کد برات کپی شد):', ghOpen: 'باز کردن GitHub ↗',
+    ghWait: 'بعد از Authorize خودش وصل می‌شه؛ این صفحه رو نبند. حساب GitHub نداری؟ توی همون صفحه رایگان بساز.',
+    ghCancel: 'ورود با GitHub لغو شد یا وقتش تموم شد', loginNA: 'ورود با GitHub الان در دسترس نیست؛ از QR کامپیوتر یا توکن استفاده کن.',
+    orLink: 'یا QR برنامهٔ کامپیوتر رو با دوربین اسکن کن، یا لینک سینک / توکن GitHub رو اینجا بذار:',
+    help: 'راهنما', helpTitle: 'راهنمای راه‌اندازی',
+    helpBody: `<h4>۱. وصل شدن</h4><ol>
+      <li><b>برنامهٔ ویندوز رو داری؟</b> توی برنامه دکمهٔ سینک (فلش‌های گرد، بالا) ← «ورود با GitHub» ← کد رو توی GitHub بزن و Authorize. بعد QR رو با دوربین گوشی اسکن کن. تمام.</li>
+      <li><b>فقط گوشی؟</b> همین‌جا «ورود با GitHub» رو بزن، کد رو توی GitHub وارد کن و Authorize.</li>
+      <li>حساب GitHub نداری؟ توی همون صفحهٔ ورود رایگان بساز (فقط ایمیل لازمه).</li></ol>
+      <h4>۲. نصب مثل اپ</h4><ol>
+      <li><b>اندروید (Chrome):</b> منوی ⋮ ← Add to Home screen یا Install app.</li>
+      <li><b>آیفون (Safari):</b> دکمهٔ Share ← Add to Home Screen. بعد از نصب، یه بار دیگه از توی خود اپ وصل شو (آیفون حافظهٔ اپ رو از Safari جدا نگه می‌داره).</li></ol>
+      <h4>۳. باز کردن سرور</h4><ol>
+      <li>یه اپ SSH نصب کن: اندروید <b>Termius</b> یا <b>ConnectBot</b>، آیفون <b>Termius</b>.</li>
+      <li>روی کارت سرور بزن تا توی اون اپ باز بشه. اگه باز نشد، دستور ssh کپی می‌شه؛ توی اپ پیستش کن.</li></ol>
+      <h4>۴. سینک</h4><ol>
+      <li>خودکاره: موقع باز کردن، چند ثانیه بعد از هر تغییر و هر ۱ دقیقه. دکمهٔ سینک بالا هم برای سینک دستیه.</li>
+      <li>همیشه آخرین تغییر برنده‌ست؛ دستگاهی که چند روز بسته بوده اطلاعات قدیمی رو برنمی‌گردونه.</li>
+      <li>فقط اسم، آدرس، پورت، یوزر و رنگ سینک می‌شه، رمزنگاری‌شده و روی GitHub خودت. پسورد هیچ‌جا نمی‌ره.</li></ol>`,
     tip: 'برای باز شدن مستقیم، یه اپ SSH مثل Termius یا ConnectBot لازمه. بعد از وصل شدن، از منوی مرورگر «Add to Home screen» رو بزن تا مثل اپ باشه.',
   },
   en: {
@@ -38,17 +58,37 @@ const L = {
     copied: 'Copied', openFail: 'SSH app didn’t open? The command is copied — paste it in your SSH app.',
     setTitle: 'Settings', lang: 'Language', sync: 'Sync', syOn: 'Sync is on · last sync: {n}', syOff: 'Sync is off',
     syNow: 'Sync now', syStop: 'Disconnect this phone', syStopQ: 'Stop syncing on this phone? The list stays here.',
-    setupH: 'Connect to the PC app',
+    setupH: 'Turn on sync',
     setupP: 'In SSH Servers on your PC, press the sync button (top) and scan the QR with your phone camera. If scanning doesn’t work, copy the “sync link”, send it to yourself and paste it here:',
     linkPh: 'Sync link or GitHub token', connect: 'Connect', badLink: 'That’s neither a valid sync link nor a GitHub token',
     noPc: 'No PC? Start from this phone with a GitHub token (only the gist box):', makeToken: 'Create token ↗',
-    exists: 'Sync already exists on this GitHub account. Bring the “sync link” from your other device and paste it here, or start over (this phone’s list replaces the old one).', restart: 'Start over',
+    exists: 'Sync already exists on this GitHub account. Scan the QR from your other device (its Sync section) or paste its “sync link” here, or start over (this phone’s list replaces the old one).', restart: 'Start over',
     myLink: 'Sync link (to add another device; it works like a password — don’t share it):', copy: 'Copy', support: 'Support',
     synced: 'Synced', got: 'List updated from another device', busy: 'Syncing…',
     eAuth: 'GitHub didn’t accept the token (expired or deleted). Get a new sync link from the PC.',
     eNotFound: 'The sync file wasn’t found on GitHub.', eKey: 'The sync key doesn’t match the file; get the sync link again from the PC.',
     eNet: 'Couldn’t reach GitHub; changes stay on the phone and sync next time.',
     never: 'not yet', justNow: 'just now', minAgo: '{n} min ago',
+
+    ghLogin: 'Sign in with GitHub', ghCode: 'Enter this code on the GitHub page and press Authorize (it’s already copied):', ghOpen: 'Open GitHub ↗',
+    ghWait: 'It connects by itself after you authorize; keep this page open. No GitHub account? Create one for free on that page.',
+    ghCancel: 'GitHub sign-in was cancelled or timed out', loginNA: 'Sign in with GitHub isn’t available right now; use the PC’s QR or a token.',
+    orLink: 'Or scan the PC app’s QR with your camera, or paste a sync link / GitHub token here:',
+    help: 'Guide', helpTitle: 'Setup guide',
+    helpBody: `<h4>1. Connect</h4><ol>
+      <li><b>Have the Windows app?</b> In the app press the sync button (round arrows, top) → “Sign in with GitHub” → enter the code on GitHub and Authorize. Then scan the QR with your phone camera. Done.</li>
+      <li><b>Phone only?</b> Press “Sign in with GitHub” right here, enter the code on GitHub and Authorize.</li>
+      <li>No GitHub account? Create one for free on that sign-in page (just an email).</li></ol>
+      <h4>2. Install it like an app</h4><ol>
+      <li><b>Android (Chrome):</b> ⋮ menu → Add to Home screen / Install app.</li>
+      <li><b>iPhone (Safari):</b> Share button → Add to Home Screen. After installing, connect once more from inside the app (iPhone keeps the app’s storage apart from Safari).</li></ol>
+      <h4>3. Open a server</h4><ol>
+      <li>Install an SSH app: Android <b>Termius</b> or <b>ConnectBot</b>, iPhone <b>Termius</b>.</li>
+      <li>Tap a server card and it opens in that app. If it doesn’t, the ssh command is copied — paste it in the app.</li></ol>
+      <h4>4. Sync</h4><ol>
+      <li>Automatic: on open, a few seconds after every change, and every minute. The sync button on top syncs by hand.</li>
+      <li>The newest change always wins; a device closed for days never brings old data back.</li>
+      <li>Only name, address, port, user and color are synced — encrypted, on your own GitHub. Passwords never leave your devices.</li></ol>`,
     tip: 'To open servers directly you need an SSH app such as Termius or ConnectBot. Once connected, use “Add to Home screen” in the browser menu so it works like an app.',
   },
 };
@@ -83,6 +123,7 @@ async function copy(s) { try { await navigator.clipboard.writeText(s); return tr
 const ICON_SRV = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg>';
 const ICON_MORE = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>';
 const ICON_PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+const ICON_GH = '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>';
 const I = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 
 function applyLang() {
@@ -98,11 +139,13 @@ function badge() {
 }
 function render() {
   applyLang(); badge();
-  $('#setup').innerHTML = sc ? '' : `<div class="setup"><h2>${t('setupH')}</h2><p>${t('setupP')}</p>
+  $('#setup').innerHTML = sc ? '' : `<div class="setup"><h2>${t('setupH')}</h2>
+    <button class="btn ghb" id="ghBtn">${ICON_GH}${t('ghLogin')}</button>
+    <p style="margin-top:14px">${t('orLink')}</p>
     <div class="row" style="flex-wrap:nowrap"><input id="lnk" class="ltr" placeholder="${t('linkPh')}" autocomplete="off" spellcheck="false" style="flex:1"><button class="btn primary" id="lnkGo" style="flex:none">${t('connect')}</button></div>
     <p class="note" style="margin:12px 0 0">${t('noPc')} <a href="https://github.com/settings/tokens/new?scopes=gist&description=SSH%20Servers%20sync" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">${t('makeToken')}</a></p>
-    <p class="note" style="margin:8px 0 0">${t('tip')}</p></div>`;
-  if (!sc) { $('#lnkGo').onclick = () => useLink($('#lnk').value.trim()); }
+    <p class="note" style="margin:10px 0 0"><a href="#" id="helpLnk" style="color:var(--accent);text-decoration:none">📖 ${t('help')}</a></p></div>`;
+  if (!sc) { $('#lnkGo').onclick = () => useLink($('#lnk').value.trim()); $('#ghBtn').onclick = ghLogin; $('#helpLnk').onclick = e => { e.preventDefault(); guide(); }; }
   let h = '';
   doc.servers.forEach((s, i) => {
     const c = s.color || '#495057';
@@ -236,6 +279,41 @@ function editor(s) {
   if (isNew) $('#eHost').focus();
 }
 
+function guide() {
+  sheet(`<h3>${t('helpTitle')}</h3><div class="guide">${t('helpBody')}</div><div class="row" style="margin-top:6px"><button class="btn" id="hClose">${t('close')}</button></div>`);
+  $('#hClose').onclick = closeSheet;
+}
+
+// "Sign in with GitHub" (device flow through the /ssh-auth/ bridge on the same domain)
+async function ghLogin() {
+  let dc;
+  try {
+    const r = await fetch('/ssh-auth/device', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    dc = r.ok ? await r.json() : null;
+  } catch (e) { dc = null; }
+  if (!dc || !dc.device_code) { toast(t('loginNA'), 'err', 6000); return; }
+  copy(dc.user_code);
+  sheet(`<h3>${t('ghLogin')}</h3><p>${t('ghCode')}</p><div class="ucode">${esc(dc.user_code)}</div>
+    <div class="row"><a class="btn primary" href="${esc(dc.verification_uri)}" target="_blank" rel="noopener" style="text-decoration:none">${t('ghOpen')}</a><button class="btn" id="gNo">${t('cancel')}</button></div>
+    <p class="note" style="margin-top:12px">${t('ghWait')}</p>`, 'login');
+  let alive = true;
+  $('#gNo').onclick = () => { alive = false; closeSheet(); };
+  let iv = Math.max(5, dc.interval || 5) * 1000;
+  const end = Date.now() + (dc.expires_in || 900) * 1000;
+  while (alive && Date.now() < end) {
+    await new Promise(r => setTimeout(r, iv));
+    if (!alive || $('#sheet').dataset.kind !== 'login') return;
+    let j;
+    try { j = await (await fetch('/ssh-auth/token', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_code: dc.device_code }) })).json(); }
+    catch (e) { continue; }
+    if (j.access_token) { closeSheet(); await useLink(j.access_token); return; }
+    if (j.error === 'slow_down') { iv += 5000; continue; }
+    if (j.error === 'authorization_pending') continue;
+    break;
+  }
+  if ($('#sheet').dataset.kind === 'login') { closeSheet(); toast(t('ghCancel'), 'err'); }
+}
+
 function settings() {
   const st = !sc ? `<div class="sstat off"><span class="d"></span>${t('syOff')}</div>`
     : state.err ? `<div class="sstat err"><span class="d"></span>${esc(state.err)}</div>`
@@ -249,10 +327,12 @@ function settings() {
       <div class="row" style="margin-bottom:10px"><button class="btn primary" id="sNow" ${state.busy ? 'disabled' : ''}>${state.busy ? t('busy') : t('syNow')}</button></div>
       <div class="row" style="margin-bottom:14px"><button class="btn" id="sStop" style="color:var(--danger)">${t('syStop')}</button></div>` : ''}
     <p class="note" style="margin-bottom:14px">${t('tip')}</p>
+    <div class="row" style="margin-bottom:8px"><button class="btn" id="sHelp">📖 ${t('help')}</button></div>
     <div class="row"><button class="btn" data-support>☕ ${t('support')}</button><a class="btn" href="https://github.com/Plus98ir/SSH-Servers" target="_blank" rel="noopener" style="text-decoration:none">GitHub ↗</a></div>
     <div class="row" style="margin-top:8px"><button class="btn" id="sClose">${t('close')}</button></div>`, 'settings');
   $('#sLang').onclick = e => { const b = e.target.closest('button'); if (!b) return; lang = b.dataset.l; store.set('lang', lang); render(); settings(); };
   $('#sClose').onclick = closeSheet;
+  $('#sHelp').onclick = guide;
   if (sc) {
     $('#sNow').onclick = () => runSync(true);
     $('#sCopy').onclick = async () => { if (await copy($('#sLink').value)) toast(t('copied')); };
@@ -277,7 +357,13 @@ $('#grid').onclick = e => {
   setTimeout(async () => { document.removeEventListener('visibilitychange', onHide); if (!left && !document.hidden) { await copy(cmd(s)); toast(t('openFail'), '', 5000); } }, 1600);
 };
 $('#grid').addEventListener('contextmenu', e => { const c = e.target.closest('.card[data-id]'); if (c) { e.preventDefault(); menu(c.dataset.id); } });
-$('#syncBtn').onclick = () => sc ? runSync(true) : settings();
+$('#syncBtn').onclick = () => {
+  if (sc) { runSync(true); return; }
+  const box = $('#setup .setup'); if (!box) return;
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  box.animate([{ boxShadow: '0 0 0 0 rgba(34,195,142,.0)' }, { boxShadow: '0 0 0 4px rgba(34,195,142,.55)' }, { boxShadow: '0 0 0 0 rgba(34,195,142,.0)' }], { duration: 1200 });
+};
+setInterval(() => { if (sc && !document.hidden && !state.busy) runSync(); }, 60000);
 $('#setBtn').onclick = settings;
 document.addEventListener('visibilitychange', () => { if (!document.hidden) syncSoon(200); });
 window.addEventListener('online', () => syncSoon(200));

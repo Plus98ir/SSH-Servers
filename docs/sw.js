@@ -1,5 +1,5 @@
 // Offline shell: network first (so updates show up), cache as fallback. GitHub API calls are never cached.
-const CACHE = 'ssh-servers-v1';
+const CACHE = 'ssh-servers-v2';
 const SHELL = ['./', 'index.html', 'app.js', 'sync.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png',
   'fonts/Vazirmatn-Regular.woff2', 'fonts/Vazirmatn-Medium.woff2', 'fonts/Vazirmatn-Bold.woff2'];
 

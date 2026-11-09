@@ -134,6 +134,7 @@ header{cursor:default}
 .linkrow{display:flex;gap:8px;margin-bottom:12px}.linkrow input{flex:1;font-family:var(--mono);font-size:11.5px}
 .sstat{font-size:12.5px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .sstat .d{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}.sstat.err .d{background:var(--danger)}
+.modal h4{font-size:13.5px;margin:12px 0 6px}.modal h4:first-child{margin-top:0}
 .modal ol{color:var(--muted);font-size:13px;line-height:1.9;margin:0 0 12px;padding-inline-start:20px}
 .modal a{color:var(--accent);text-decoration:none;cursor:pointer}
 .ghb{width:100%;justify-content:center;padding:11px;font-weight:700;background:#f0f3f6;color:#0d1117;margin-bottom:6px}.ghb:hover{background:#fff}
@@ -201,7 +202,14 @@ header{cursor:default}
 <script>
 const $=s=>document.querySelector(s);
 const L={
- fa:{syLogin:'ورود با GitHub',syOr:'یا با توکن / لینک سینک:',syCode:'این کد رو توی صفحه‌ای که باز شد وارد کن و Authorize رو بزن:',syWait:'منتظر تأیید GitHub…',syncTip:'سینک با گوشی و دستگاه‌های دیگه',syTitle:'سینک لیست سرورها',syIntro:'لیست سرورها (اسم، آدرس، پورت، یوزر و رنگ) رمزنگاری‌شده توی یه Gist مخفی روی GitHub خودت ذخیره می‌شه. پسورد و کلید SSH هیچ‌وقت جایی فرستاده نمی‌شن.',syStep1:'یه توکن GitHub بساز (فقط تیک gist لازمه):',syMake:'ساخت توکن',syStep2:'توکن رو اینجا بذار. اگه قبلاً روی یه دستگاه دیگه سینک رو روشن کردی، به جای توکن «لینک سینک» اون دستگاه رو بذار.',syPh:'ghp_… یا لینک سینک',syGo:'روشن کردن سینک',syBusy:'در حال وصل شدن…',syExists:'روی این حساب GitHub قبلاً سینک ساخته شده. «لینک سینک» رو از دستگاه دیگه (بخش سینک) بیار و اینجا بذار. اگه اون دستگاه رو نداری، از نو بساز؛ لیست این کامپیوتر جای قبلی رو می‌گیره.',syReplace:'از نو بساز',syOn:'سینک روشنه',syLast:'آخرین سینک: {n}',syNever:'هنوز سینک نشده',syPhone:'روی گوشی این QR رو با دوربین اسکن کن (یا لینک رو برای خودت بفرست)، بعد توی مرورگر «Add to Home screen» رو بزن:',syCopy:'کپی',syCopied:'لینک کپی شد',syWarn:'این لینک مثل رمزه؛ به کسی نده.',syNow:'همین الان سینک کن',syOff:'خاموش کردن',syOffQ:'سینک روی این کامپیوتر خاموش بشه؟ لیست سرورها همین‌جا می‌مونه.',syDone:'سینک شد',syGot:'لیست سرورها از دستگاه دیگه به‌روز شد',justNow:'همین الان',minAgo:'{n} دقیقه پیش',title:'سرورهای SSH',subtitle:'روی یه سرور کلیک کن تا مستقیم توی Terminal وصل بشی',openAll:'همه با هم',multi:'چند سرور با هم',multiTitle:'چند سرور با هم',multiPick:'سرورها رو انتخاب کن:',all:'همه',none:'هیچ‌کدوم',splitBtn:'باز کردن کنار هم (Split)',tabsBtn:'باز کردن توی تب‌ها',splitNote:'نکته: توی Terminal با Ctrl+Shift+P و نوشتن broadcast می‌تونی هر چی تایپ می‌کنی همزمان بره توی همهٔ پنجره‌ها.',cmdSec:'اجرای یه دستور روی همه',cmdPh:'مثلاً uptime یا apt update',run:'اجرا',cmdNote:'برای اجرای دستور، «ورود بدون رمز» باید روی اون سرورها فعال باشه. حداکثر ۹۰ ثانیه.',running:'در حال اجرا…',exitOk:'موفق · {n}',exitBad:'کد خروج {n}',errShort:'خطا',secs:'{n} ثانیه',pickOne:'حداقل یه سرور انتخاب کن',
+ fa:{syHelp:'راهنما',syHelpT:'راهنمای سینک',syHelpB:`<h4>سینک چیه؟</h4><p>لیست سرورهات روی کامپیوتر و گوشی (و هر کامپیوتر دیگه) یکی می‌شه. اختیاریه؛ بدون سینک هم برنامه مثل قبل کار می‌کنه.</p>
+<h4>راه‌اندازی (یک بار)</h4><ol><li>«ورود با GitHub» رو بزن. صفحهٔ GitHub باز می‌شه و کد برات کپی شده؛ Paste کن و Authorize رو بزن. حساب GitHub نداری؟ همون‌جا با یه ایمیل رایگان بساز.</li>
+<li>QR که نشون داده می‌شه رو با دوربین گوشی اسکن کن؛ صفحهٔ گوشی باز می‌شه و وصله.</li>
+<li>روی گوشی از منوی مرورگر «Add to Home screen» رو بزن تا مثل اپ نصب بشه. برای باز کردن سرورها یه اپ SSH مثل Termius یا ConnectBot لازمه.</li>
+<li>کامپیوتر دوم؟ «لینک سینک» رو از همین صفحه کپی کن و توی بخش سینک اون کامپیوتر بذار.</li></ol>
+<h4>بعدش</h4><ol><li>خودکاره: موقع باز کردن برنامه، چند ثانیه بعد از هر تغییر و هر ۱ دقیقه. دکمهٔ «همین الان سینک کن» برای سینک دستیه.</li>
+<li>همیشه آخرین تغییر برنده‌ست؛ دستگاهی که چند روز بسته بوده اطلاعات قدیمی رو برنمی‌گردونه.</li>
+<li>فقط اسم، آدرس، پورت، یوزر و رنگ می‌ره، رمزنگاری‌شده و روی GitHub خودت. پسورد و کلید SSH هیچ‌جا نمی‌رن.</li></ol>`,syLogin:'ورود با GitHub',syOr:'یا با توکن / لینک سینک:',syCode:'این کد رو توی صفحه‌ای که باز شد وارد کن و Authorize رو بزن:',syWait:'منتظر تأیید GitHub…',syncTip:'سینک با گوشی و دستگاه‌های دیگه',syTitle:'سینک لیست سرورها',syIntro:'لیست سرورها (اسم، آدرس، پورت، یوزر و رنگ) رمزنگاری‌شده توی یه Gist مخفی روی GitHub خودت ذخیره می‌شه. پسورد و کلید SSH هیچ‌وقت جایی فرستاده نمی‌شن.',syStep1:'یه توکن GitHub بساز (فقط تیک gist لازمه):',syMake:'ساخت توکن',syStep2:'توکن رو اینجا بذار. اگه قبلاً روی یه دستگاه دیگه سینک رو روشن کردی، به جای توکن «لینک سینک» اون دستگاه رو بذار.',syPh:'ghp_… یا لینک سینک',syGo:'روشن کردن سینک',syBusy:'در حال وصل شدن…',syExists:'روی این حساب GitHub قبلاً سینک ساخته شده. «لینک سینک» رو از دستگاه دیگه (بخش سینک) بیار و اینجا بذار. اگه اون دستگاه رو نداری، از نو بساز؛ لیست این کامپیوتر جای قبلی رو می‌گیره.',syReplace:'از نو بساز',syOn:'سینک روشنه',syLast:'آخرین سینک: {n}',syNever:'هنوز سینک نشده',syPhone:'روی گوشی این QR رو با دوربین اسکن کن (یا لینک رو برای خودت بفرست)، بعد توی مرورگر «Add to Home screen» رو بزن:',syCopy:'کپی',syCopied:'لینک کپی شد',syWarn:'این لینک مثل رمزه؛ به کسی نده.',syNow:'همین الان سینک کن',syOff:'خاموش کردن',syOffQ:'سینک روی این کامپیوتر خاموش بشه؟ لیست سرورها همین‌جا می‌مونه.',syDone:'سینک شد',syGot:'لیست سرورها از دستگاه دیگه به‌روز شد',justNow:'همین الان',minAgo:'{n} دقیقه پیش',title:'سرورهای SSH',subtitle:'روی یه سرور کلیک کن تا مستقیم توی Terminal وصل بشی',openAll:'همه با هم',multi:'چند سرور با هم',multiTitle:'چند سرور با هم',multiPick:'سرورها رو انتخاب کن:',all:'همه',none:'هیچ‌کدوم',splitBtn:'باز کردن کنار هم (Split)',tabsBtn:'باز کردن توی تب‌ها',splitNote:'نکته: توی Terminal با Ctrl+Shift+P و نوشتن broadcast می‌تونی هر چی تایپ می‌کنی همزمان بره توی همهٔ پنجره‌ها.',cmdSec:'اجرای یه دستور روی همه',cmdPh:'مثلاً uptime یا apt update',run:'اجرا',cmdNote:'برای اجرای دستور، «ورود بدون رمز» باید روی اون سرورها فعال باشه. حداکثر ۹۰ ثانیه.',running:'در حال اجرا…',exitOk:'موفق · {n}',exitBad:'کد خروج {n}',errShort:'خطا',secs:'{n} ثانیه',pickOne:'حداقل یه سرور انتخاب کن',
   sameWindow:'اگه Terminal بازه، به‌صورت تب جدید باز بشه',autoClose:'بعد از اتصال، این پنجره بسته بشه',
   mEdit:'ویرایش',mKey:'ورود بدون رمز (نصب کلید)',mUp:'بیار جلوتر',mDown:'ببر عقب‌تر',mDel:'حذف',
   checking:'در حال بررسی…',down:'در دسترس نیست',ms:'{n} میلی‌ثانیه',noPass:'بدون رمز',noPassTip:'ورود بدون رمز فعاله',
@@ -220,7 +228,14 @@ const L={
   hcAlwaysNote:'برای سرورهایی که زیاد Rebuildشون می‌کنی خوبه. بعداً از «ویرایش» خاموشش کن.',hcAccept:'قبول کن و ادامه بده',hcDone:'کلید جدید ذخیره شد',
   autoTrust:'وقتی کلید هویت سرور عوض شد (بعد از Rebuild)، خودکار قبولش کن',
   nkTitle:'ورود بدون رمز به «{n}» دیگه کار نمی‌کنه',nkMsg:'سرور احتمالاً Rebuild شده و کلیدت ازش پاک شده. رمز سرور رو یه بار بنویس تا دوباره نصبش کنم.',nkSkip:'فعلاً با رمز وصل شو',noWT:'Windows Terminal پیدا نشد؛ سرورها با cmd معمولی باز میشن'},
- en:{syLogin:'Sign in with GitHub',syOr:'or use a token / sync link:',syCode:'Enter this code on the page that just opened and press Authorize:',syWait:'Waiting for GitHub…',syncTip:'Sync with your phone and other devices',syTitle:'Sync the server list',syIntro:'The server list (name, address, port, user and color) is kept encrypted in a secret Gist on your own GitHub. Passwords and SSH keys are never sent anywhere.',syStep1:'Create a GitHub token (only the gist box is needed):',syMake:'Create token',syStep2:'Paste the token here. If sync is already on for another device, paste that device’s “sync link” instead.',syPh:'ghp_… or a sync link',syGo:'Turn on sync',syBusy:'Connecting…',syExists:'Sync already exists on this GitHub account. Bring the “sync link” from your other device (its Sync section) and paste it here. If you don’t have that device, start over — this PC’s list replaces the old one.',syReplace:'Start over',syOn:'Sync is on',syLast:'Last sync: {n}',syNever:'Not synced yet',syPhone:'On your phone scan this QR with the camera (or send yourself the link), then tap “Add to Home screen” in the browser:',syCopy:'Copy',syCopied:'Link copied',syWarn:'This link works like a password — don’t share it.',syNow:'Sync now',syOff:'Turn off',syOffQ:'Turn sync off on this PC? The server list stays here.',syDone:'Synced',syGot:'Server list updated from another device',justNow:'just now',minAgo:'{n} min ago',title:'SSH Servers',subtitle:'Click a server to connect straight in Windows Terminal',openAll:'Open all',multi:'Multiple servers',multiTitle:'Multiple servers',multiPick:'Pick the servers:',all:'All',none:'None',splitBtn:'Open side by side (Split)',tabsBtn:'Open in tabs',splitNote:'Tip: in Terminal press Ctrl+Shift+P and type broadcast to send what you type to every pane at once.',cmdSec:'Run one command on all of them',cmdPh:'e.g. uptime or apt update',run:'Run',cmdNote:'Running commands needs “Passwordless login” set up on those servers. 90 seconds max.',running:'Running…',exitOk:'OK · {n}',exitBad:'exit code {n}',errShort:'Error',secs:'{n}s',pickOne:'Select at least one server',
+ en:{syHelp:'Guide',syHelpT:'Sync guide',syHelpB:`<h4>What is sync?</h4><p>Your server list becomes the same on your PC, your phone and any other PC. It’s optional; without it the app works as before.</p>
+<h4>Setup (once)</h4><ol><li>Press “Sign in with GitHub”. GitHub opens and the code is already copied — paste it and press Authorize. No GitHub account? Create one for free right there (just an email).</li>
+<li>Scan the QR that appears with your phone camera; the phone page opens already connected.</li>
+<li>On the phone use “Add to Home screen” in the browser menu to install it like an app. To open servers you need an SSH app such as Termius or ConnectBot.</li>
+<li>Another PC? Copy the “sync link” from this window and paste it into that PC’s sync box.</li></ol>
+<h4>After that</h4><ol><li>It’s automatic: when the app opens, a few seconds after every change, and every minute. “Sync now” syncs by hand.</li>
+<li>The newest change always wins; a device closed for days never brings old data back.</li>
+<li>Only name, address, port, user and color are sent — encrypted, on your own GitHub. Passwords and SSH keys never leave the PC.</li></ol>`,syLogin:'Sign in with GitHub',syOr:'or use a token / sync link:',syCode:'Enter this code on the page that just opened and press Authorize:',syWait:'Waiting for GitHub…',syncTip:'Sync with your phone and other devices',syTitle:'Sync the server list',syIntro:'The server list (name, address, port, user and color) is kept encrypted in a secret Gist on your own GitHub. Passwords and SSH keys are never sent anywhere.',syStep1:'Create a GitHub token (only the gist box is needed):',syMake:'Create token',syStep2:'Paste the token here. If sync is already on for another device, paste that device’s “sync link” instead.',syPh:'ghp_… or a sync link',syGo:'Turn on sync',syBusy:'Connecting…',syExists:'Sync already exists on this GitHub account. Bring the “sync link” from your other device (its Sync section) and paste it here. If you don’t have that device, start over — this PC’s list replaces the old one.',syReplace:'Start over',syOn:'Sync is on',syLast:'Last sync: {n}',syNever:'Not synced yet',syPhone:'On your phone scan this QR with the camera (or send yourself the link), then tap “Add to Home screen” in the browser:',syCopy:'Copy',syCopied:'Link copied',syWarn:'This link works like a password — don’t share it.',syNow:'Sync now',syOff:'Turn off',syOffQ:'Turn sync off on this PC? The server list stays here.',syDone:'Synced',syGot:'Server list updated from another device',justNow:'just now',minAgo:'{n} min ago',title:'SSH Servers',subtitle:'Click a server to connect straight in Windows Terminal',openAll:'Open all',multi:'Multiple servers',multiTitle:'Multiple servers',multiPick:'Pick the servers:',all:'All',none:'None',splitBtn:'Open side by side (Split)',tabsBtn:'Open in tabs',splitNote:'Tip: in Terminal press Ctrl+Shift+P and type broadcast to send what you type to every pane at once.',cmdSec:'Run one command on all of them',cmdPh:'e.g. uptime or apt update',run:'Run',cmdNote:'Running commands needs “Passwordless login” set up on those servers. 90 seconds max.',running:'Running…',exitOk:'OK · {n}',exitBad:'exit code {n}',errShort:'Error',secs:'{n}s',pickOne:'Select at least one server',
   sameWindow:'Open as a new tab if Terminal is already open',autoClose:'Close this window after connecting',
   mEdit:'Edit',mKey:'Passwordless login (install key)',mUp:'Move earlier',mDown:'Move later',mDel:'Delete',
   checking:'Checking…',down:'Unreachable',ms:'{n} ms',noPass:'No password',noPassTip:'Passwordless login is set up',
@@ -557,7 +572,7 @@ window.onSync=async o=>{
 async function syncDialog(){
   inSync=true; await loadSync();
   if(!sync.on){
-    modal(`<h3>${t('syTitle')}</h3><p>${t('syIntro')}</p>
+    modal(`<h3>${t('syTitle')} <a id="sHelp" style="font-size:12.5px;font-weight:500;margin-inline-start:8px">📖 ${t('syHelp')}</a></h3><p>${t('syIntro')}</p>
       ${sync.login?`<button class="btn ghb" id="sGh"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z"/></svg>${t('syLogin')}</button><div class="sec">${t('syOr')}</div>`:''}
       <ol><li>${t('syStep1')} <a id="sMake">${t('syMake')} ↗</a></li><li>${t('syStep2')}</li></ol>
       <div class="f"><input id="sIn" class="ltr" placeholder="${t('syPh')}" spellcheck="false" autocomplete="off"></div>
@@ -565,6 +580,7 @@ async function syncDialog(){
       <div class="row"><button class="btn primary" id="sGo">${t('syGo')}</button><button class="btn" id="sNo">${t('cancel')}</button></div>`);
     $('#modal').classList.add('wide'); fit();
     $('#sMake').onclick=()=>window.openURL(sync.tokenURL);
+    $('#sHelp').onclick=()=>syncHelp();
     if(sync.login) $('#sGh').onclick=()=>{ $('#sGh').disabled=true; window.loginGitHub(); };
     window.onDevice=(code,uri)=>{
       modal(`<h3>${t('syLogin')}</h3><p>${t('syCode')}</p><div class="ucode">${esc(code)}</div>
@@ -593,7 +609,7 @@ async function syncDialog(){
     $('#sIn').focus(); return;
   }
   const err=!syncSt.ok&&syncSt.msg;
-  modal(`<h3>${t('syTitle')}</h3>
+  modal(`<h3>${t('syTitle')} <a id="sHelp" style="font-size:12.5px;font-weight:500;margin-inline-start:8px">📖 ${t('syHelp')}</a></h3>
     <div class="sstat ${err?'err':''}"><span class="d"></span>${err?esc(syncSt.msg):t('syOn')+' · '+t('syLast',ago(sync.last))}</div>
     <p style="margin-bottom:8px">${t('syPhone')}</p>
     ${sync.qr?`<img class="qr" src="${sync.qr}" alt="QR">`:''}
@@ -603,12 +619,19 @@ async function syncDialog(){
   $('#modal').classList.add('wide'); fit();
   $('#sCopy').onclick=()=>{ const i=$('#sLink'); i.select(); try{ navigator.clipboard.writeText(i.value); }catch(e){ document.execCommand('copy'); } toast(t('syCopied'),'ok'); };
   $('#sNow').onclick=()=>window.syncNow();
+  $('#sHelp').onclick=()=>syncHelp();
   $('#sClose').onclick=()=>{ inSync=false; closeModal(); };
   $('#sOff').onclick=()=>{ modal(`<h3>${t('syOff')}</h3><p>${t('syOffQ')}</p><div class="row"><button class="btn danger" id="oGo">${t('syOff')}</button><button class="btn" id="oNo">${t('cancel')}</button></div>`);
     $('#oGo').onclick=async()=>{ await window.stopSync(); inSync=false; syncSt={ok:true}; closeModal(); loadSync(); };
     $('#oNo').onclick=()=>syncDialog(); };
 }
+function syncHelp(){ inSync=false;
+  modal(`<h3>${t('syHelpT')}</h3><div style="color:var(--muted);font-size:13px;line-height:1.85">${t('syHelpB')}</div><div class="row" style="margin-top:12px"><button class="btn" id="hBack">${t('close')}</button></div>`);
+  $('#modal').classList.add('wide'); fit();
+  $('#hBack').onclick=()=>syncDialog();
+}
 $('#syncBtn').onclick=()=>syncDialog();
+setInterval(()=>{ if(sync.on&&!syncBusy&&!document.hidden) window.syncNow(); },60000);
 
 window.onToast=(m,k)=>toast(m,k||'',k==='err'?5000:3000);
 
