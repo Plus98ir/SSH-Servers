@@ -18,7 +18,8 @@ Click a card → `ssh` opens straight in Windows Terminal. Also: split/tab multi
 - `window.go` frameless window, auto-size, drag
 - `ui.html` the whole UI (strings in `L.fa` / `L.en`)
 - `sync.go` Gist sync: merge rules, AES-GCM, GitHub API, sync link + QR, "Sign in with GitHub" (device flow, `githubClientID`)
-- `docs/` phone PWA (GitHub Pages serves /docs) (index.html, app.js, sync.js = same format + merge as sync.go, sw.js, manifest). Hosted at `syncPage` (sync.go).
+- `docs/index.html` website / download page (bilingual); redirects sync links, installed app and returning phones to `docs/app/`
+- `docs/app/` phone PWA (GitHub Pages serves /docs) (index.html, app.js, sync.js = same format + merge as sync.go, sw.js, manifest). Hosted at `syncPage` (sync.go).
 - `rsrc_windows_amd64.syso` icon + manifest (icon group id 2)
 
 ## Build (Linux sandbox)
@@ -29,7 +30,7 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "-H windowsg
 golang.org/x/* are fetched from their GitHub mirrors via `replace` in go.mod (golang.org itself is blocked). Go 1.24 → x/crypto v0.41.0.
 
 ## Gotchas
-- Sync: merge in sync.go and docs/sync.js must stay identical (tested Go↔JS encrypt/decrypt + merge). keyOK/autoTrust are device-only, never synced. Every edit stamps `u`, delete → `deleted[id]`, reorder → `orderU`.
+- Sync: merge in sync.go and docs/app/sync.js must stay identical (tested Go↔JS encrypt/decrypt + merge). keyOK/autoTrust are device-only, never synced. Every edit stamps `u`, delete → `deleted[id]`, reorder → `orderU`.
 - Sync link = `<syncPage>#g=<gist>&k=<key>&t=<token>`; fragment never reaches a server. iOS home-screen apps have their own storage → paste the link once inside the installed app.
 - Host key changed (server rebuilt): the app checks before every connect, shows the new fingerprint, and one click replaces the old known_hosts entry. Per-server `autoTrust` skips the question.
 - After a rebuild the key on the server is gone too → app asks for the password once and reinstalls the key.

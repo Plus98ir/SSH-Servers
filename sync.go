@@ -3,7 +3,7 @@
 // Server-list sync between devices through a secret GitHub Gist.
 // The gist holds one file, encrypted with AES-256-GCM; the key never leaves the
 // devices (it travels only inside the sync link / QR code).
-// The phone side is the web app in docs/ (same format, same merge rules).
+// The phone side is the web app in docs/app/ (same format, same merge rules).
 package main
 
 import (
@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	syncPage  = "https://corenetbase.com/SSH-Servers/" // phone web app
+	syncPage  = "https://corenetbase.com/SSH-Servers/app/" // phone web app
 	gistFile  = "ssh-servers.json"
 	gistDesc  = "SSH Servers sync (encrypted)"
 	tombLife  = 180 * 24 * time.Hour
@@ -79,7 +79,7 @@ type syncInfo struct {
 
 func nowMs() int64 { return time.Now().UnixMilli() }
 
-// ---------------------------------------------------------------- merge (same rules as docs/sync.js)
+// ---------------------------------------------------------------- merge (same rules as docs/app/sync.js)
 
 func localDoc() syncDoc { // call with mu held
 	d := syncDoc{V: 1, Servers: []syncSrv{}, Deleted: map[string]int64{}, OrderU: cfg.OrderU}

@@ -30,7 +30,8 @@ TA53aFyGNfSAcrCaJi9QmA9x5W47nPJcf7
 ## Download
 
 - **Windows:** [`SSH Servers.exe`](https://github.com/Plus98ir/SSH-Servers/releases/latest/download/SSH.Servers.exe). It's one file with nothing to install. It needs the WebView2 Runtime, which Windows 10/11 already has.
-- **Phone (Android / iPhone):** https://corenetbase.com/SSH-Servers/. Open it and use **Add to Home screen** to install it like an app.
+- **Website:** https://corenetbase.com/SSH-Servers/
+- **Phone (Android / iPhone):** https://corenetbase.com/SSH-Servers/app/. Open it and use **Add to Home screen** to install it like an app.
 
 ## What it does
 
@@ -73,6 +74,6 @@ No PC? Paste a GitHub token on the phone and start there. You can add the PC lat
 go build -trimpath -ldflags "-H windowsgui -s -w" -o "SSH Servers.exe" .
 ```
 
-Go 1.24+ and Windows (WebView2 via [go-webview2](https://github.com/jchv/go-webview2)). The phone app is static HTML/JS in [`docs/`](docs/) and is served by GitHub Pages.
+Go 1.24+ and Windows (WebView2 via [go-webview2](https://github.com/jchv/go-webview2)). The website ([`docs/`](docs/)) and the phone app ([`docs/app/`](docs/app/)) are static HTML/JS served by GitHub Pages.
 
 The server list lives in `servers.json` next to the exe.

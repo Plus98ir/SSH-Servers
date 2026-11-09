@@ -31,7 +31,8 @@ TA53aFyGNfSAcrCaJi9QmA9x5W47nPJcf7
 ## دانلود
 
 - **ویندوز:** [`SSH Servers.exe`](https://github.com/Plus98ir/SSH-Servers/releases/latest/download/SSH.Servers.exe). فقط یک فایله و نصب لازم نداره. به WebView2 Runtime نیاز داره که ویندوز ۱۰ و ۱۱ خودشون دارن.
-- **گوشی (اندروید / آیفون):** https://corenetbase.com/SSH-Servers/. بازش کن و از منوی مرورگر **Add to Home screen** رو بزن تا مثل یه اپ نصب بشه.
+- **سایت:** https://corenetbase.com/SSH-Servers/
+- **گوشی (اندروید / آیفون):** https://corenetbase.com/SSH-Servers/app/. بازش کن و از منوی مرورگر **Add to Home screen** رو بزن تا مثل یه اپ نصب بشه.
 
 ## چه کار می‌کنه
 
@@ -74,7 +75,7 @@ TA53aFyGNfSAcrCaJi9QmA9x5W47nPJcf7
 go build -trimpath -ldflags "-H windowsgui -s -w" -o "SSH Servers.exe" .
 ```
 
-Go نسخه‌ی ۱.۲۴ به بالا و ویندوز لازمه. اپ گوشی HTML/JS ساده‌ست که توی پوشه‌ی [`docs/`](docs/) قرار داره و GitHub Pages منتشرش می‌کنه.
+Go نسخه‌ی ۱.۲۴ به بالا و ویندوز لازمه. سایت (پوشه‌ی [`docs/`](docs/)) و اپ گوشی (پوشه‌ی [`docs/app/`](docs/app/)) HTML/JS ساده‌ان و GitHub Pages منتشرشون می‌کنه.
 
 لیست سرورها توی فایل `servers.json` کنار exe ذخیره می‌شه.
 
