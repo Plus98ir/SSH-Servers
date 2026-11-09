@@ -81,7 +81,11 @@ class DeviceKey {
   List<SSHKeyPair> get identities => SSHKeyPair.fromPem(pem);
 }
 
-String fpText(Uint8List fp) => fp.map((b) => b.toRadixString(16).padLeft(2, '0')).join(':');
+/// dartssh2 hands over the fingerprint as text ("SHA256:...") or raw bytes; show it like ssh does.
+String fpText(Uint8List fp) {
+  if (fp.every((b) => b >= 0x20 && b < 0x7f)) return String.fromCharCodes(fp);
+  return fp.map((b) => b.toRadixString(16).padLeft(2, '0')).join(':');
+}
 
 // ---------------------------------------------------------------- session
 
@@ -103,6 +107,9 @@ class Sess extends ChangeNotifier {
   SSHClient? _client;
   SSHSession? _shell;
   SessState state = SessState.connecting;
+
+  /// sticky Ctrl from the key bar: applies to the next typed key
+  final ctrl = ValueNotifier<bool>(false);
   String error = '';
 
   Sess(this.server);
@@ -155,7 +162,16 @@ class Sess extends ChangeNotifier {
     _shell = shell;
     state = SessState.connected;
     notifyListeners();
-    term.onOutput = (data) => shell.write(Uint8List.fromList(utf8.encode(data)));
+    term.onOutput = (data) {
+      if (ctrl.value && data.length == 1) {
+        final c = data.toLowerCase().codeUnitAt(0);
+        if (c >= 0x61 && c <= 0x7a) data = String.fromCharCode(c - 0x60); // ctrl+letter
+        if (data == ' ' || data == '2') data = '\x00';
+        if (data == '[') data = '\x1b';
+        ctrl.value = false;
+      }
+      shell.write(Uint8List.fromList(utf8.encode(data)));
+    };
     term.onResize = (w, h, pw, ph) => shell.resizeTerminal(w, h, pw, ph);
     shell.stdout.cast<List<int>>().transform(const Utf8Decoder(allowMalformed: true)).listen(term.write);
     shell.stderr.cast<List<int>>().transform(const Utf8Decoder(allowMalformed: true)).listen(term.write);
