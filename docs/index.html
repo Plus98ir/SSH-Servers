@@ -98,7 +98,7 @@ footer a{color:var(--muted);text-decoration:none}
       <p class="lead" data-i="lead"></p>
       <div class="cta">
         <a class="btn primary" href="https://github.com/Plus98ir/SSH-Servers/releases/latest/download/SSH.Servers.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.4 4.5v7H3zM11.3 4.4 21 3v8.5h-9.7zM3 12.4h7.4v7.1L3 18.5zM11.3 12.4H21V21l-9.7-1.4z"/></svg><span data-i="dlWin"></span></a>
-        <a class="btn" href="app/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg><span data-i="openPhone"></span></a>
+        <a class="btn" data-apk href="https://github.com/Plus98ir/SSH-Servers/releases/download/android-v1.0.0/SSH-Servers.apk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48 19.44 6.3a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52M7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5m10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5"/></svg><span data-i="dlAnd"></span></a>
       </div>
       <p class="small" data-i="req"></p>
     </div>
@@ -135,7 +135,7 @@ footer a{color:var(--muted);text-decoration:none}
     <div><h2 data-i="dlTitle" style="margin:0"></h2><p class="sub" data-i="dlSub" style="margin:4px 0 0"></p></div>
     <div class="cta">
       <a class="btn primary" href="https://github.com/Plus98ir/SSH-Servers/releases/latest/download/SSH.Servers.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.4 4.5v7H3zM11.3 4.4 21 3v8.5h-9.7zM3 12.4h7.4v7.1L3 18.5zM11.3 12.4H21V21l-9.7-1.4z"/></svg><span data-i="dlWin"></span></a>
-      <a class="btn" href="app/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg><span data-i="openPhone"></span></a>
+      <a class="btn" data-apk href="https://github.com/Plus98ir/SSH-Servers/releases/download/android-v1.0.0/SSH-Servers.apk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48 19.44 6.3a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52M7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5m10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5"/></svg><span data-i="dlAnd"></span></a>
     </div>
   </div>
 
@@ -160,19 +160,20 @@ var T = {
     h1: 'One click into your <span>SSH servers</span>',
     lead: 'A clean Windows launcher for your SSH servers, and the same list on your phone — synced, encrypted, on your own GitHub. Free and open source, FA / EN.',
     dlWin: 'Download for Windows', openPhone: 'Open the phone app',
-    req: 'Windows 10 / 11 · one .exe, nothing to install · phone app works on Android and iPhone',
+    dlAnd: 'Download for Android',
+    req: 'Windows 10 / 11 · one .exe, nothing to install · Android app with a built-in SSH terminal · <a href="app/" style="color:inherit">web version</a>',
     fTitle: 'Everything you do with SSH, without typing commands', fSub: 'Each server is a card. Click it and you’re in.',
     feat: [
       ['click', 'One click', 'Click a card (or press 1–9) and ssh opens straight in Windows Terminal, in a new tab or its own window.'],
       ['split', 'Many servers at once', 'Open servers side by side or in tabs, or run one command on all of them and see every result.'],
       ['key', 'Passwordless login', 'Enter the password once; the app installs your SSH key on the server. The password is never saved.'],
       ['shield', 'Rebuilt server? No problem', 'Changed host key is shown and fixed in one click. If the key login broke too, it reinstalls the key.'],
-      ['phone', 'On your phone too', 'Same cards on Android and iPhone; tap one and it opens in Termius, ConnectBot or any SSH app.'],
+      ['phone', 'Android app with a real terminal', 'Same cards on your phone with a built-in SSH terminal: sessions, key bar, swipe for arrows, double tap for Tab, passwordless login.'],
       ['sync', 'Always in sync', 'Add or edit a server anywhere — it shows up everywhere. Automatic, every minute and after every change.']
     ],
     sTitle: 'Sync that just works', sSub: 'No account with us, no server in between. Your list lives on your own GitHub.',
     sync: [
-      '<b>Sign in with GitHub</b> on the PC, then scan the QR with your phone. That’s all.',
+      '<b>Sign in with GitHub</b> on the PC, then scan its QR in the Android app. That’s all.',
       '<b>Encrypted</b> with AES-256-GCM; the key never leaves your devices.',
       '<b>The newest change always wins</b> — a device closed for days never brings old data back, deleted servers stay deleted.',
       '<b>Only</b> name, address, port, user and color are synced. Passwords and SSH keys never leave the PC.',
@@ -182,7 +183,7 @@ var T = {
     steps: [
       ['Download and run', 'Download the .exe and open it. Add your servers with the + card.'],
       ['Turn on sync', 'Press the round-arrows button on top → Sign in with GitHub → enter the code and Authorize.'],
-      ['Scan on the phone', 'Scan the QR with your phone camera, then “Add to Home screen”. Install an SSH app such as Termius.']
+      ['Install on Android', 'Download the Android app, open Sync and scan the PC’s QR (or Sign in with GitHub). Your servers appear right away.']
     ],
     dlTitle: 'Ready?', dlSub: 'Free, open source, no ads, no account with us.',
     foot: 'SSH Servers — open source by PLUS98IR', support: '☕ Support'
@@ -192,19 +193,20 @@ var T = {
     h1: 'با یک کلیک به <span>سرورهای SSH</span> وصل شو',
     lead: 'یه لانچر تمیز ویندوزی برای سرورهای SSH، و همون لیست روی گوشیت — سینک‌شده، رمزنگاری‌شده و روی GitHub خودت. رایگان و متن‌باز، فارسی و انگلیسی.',
     dlWin: 'دانلود برای ویندوز', openPhone: 'باز کردن اپ گوشی',
-    req: 'ویندوز ۱۰ و ۱۱ · فقط یک فایل exe، بدون نصب · اپ گوشی روی اندروید و آیفون کار می‌کنه',
+    dlAnd: 'دانلود برای اندروید',
+    req: 'ویندوز ۱۰ و ۱۱ · فقط یک فایل exe، بدون نصب · اپ اندروید با ترمینال SSH داخلی · <a href="app/" style="color:inherit">نسخهٔ وب</a>',
     fTitle: 'همهٔ کارهای SSH، بدون تایپ دستور', fSub: 'هر سرور یه کارته. کلیک کن و وارد شو.',
     feat: [
       ['click', 'یک کلیک', 'روی کارت کلیک کن (یا ۱ تا ۹ رو بزن) تا ssh مستقیم توی Windows Terminal باز بشه، توی تب جدید یا پنجرهٔ جدا.'],
       ['split', 'چند سرور با هم', 'سرورها رو کنار هم یا توی تب‌ها باز کن، یا یه دستور رو روی همه اجرا کن و نتیجهٔ هر کدوم رو ببین.'],
       ['key', 'ورود بدون رمز', 'یک بار پسورد رو بزن؛ برنامه کلید SSH رو روی سرور نصب می‌کنه. پسورد هیچ‌جا ذخیره نمی‌شه.'],
       ['shield', 'سرور از نو نصب شده؟ مشکلی نیست', 'host key جدید نشون داده می‌شه و با یک کلیک درست می‌شه. اگه ورود با کلید هم خراب شده باشه، کلید دوباره نصب می‌شه.'],
-      ['phone', 'روی گوشی هم هست', 'همون کارت‌ها روی اندروید و آیفون؛ روی هر سرور بزنی توی Termius، ConnectBot یا هر اپ SSH باز می‌شه.'],
+      ['phone', 'اپ اندروید با ترمینال واقعی', 'همون کارت‌ها روی گوشی با ترمینال SSH داخلی: چند سشن، نوار کلید، کشیدن انگشت برای فلش‌ها، دوبار ضربه برای Tab، ورود بدون رمز.'],
       ['sync', 'همیشه سینک', 'هر جا سرور اضافه یا ویرایش کنی، همه‌جا میاد. خودکار، هر یک دقیقه و بعد از هر تغییر.']
     ],
     sTitle: 'سینکی که بی‌دردسر کار می‌کنه', sSub: 'نه حسابی پیش ما، نه سرور واسطه. لیستت روی GitHub خودته.',
     sync: [
-      'روی کامپیوتر <b>با GitHub وارد شو</b>، بعد QR رو با گوشی اسکن کن. همین.',
+      'روی کامپیوتر <b>با GitHub وارد شو</b>، بعد QR رو توی اپ اندروید اسکن کن. همین.',
       '<b>رمزنگاری‌شده</b> با AES-256-GCM؛ کلید هیچ‌وقت از دستگاه‌هات بیرون نمی‌ره.',
       '<b>همیشه آخرین تغییر برنده‌ست</b> — دستگاهی که چند روز بسته بوده اطلاعات قدیمی رو برنمی‌گردونه و سرور حذف‌شده حذف می‌مونه.',
       '<b>فقط</b> اسم، آدرس، پورت، یوزر و رنگ سینک می‌شه. پسورد و کلید SSH از کامپیوتر بیرون نمی‌رن.',
@@ -214,7 +216,7 @@ var T = {
     steps: [
       ['دانلود و اجرا', 'فایل exe رو دانلود کن و بازش کن. سرورهات رو با کارت + اضافه کن.'],
       ['روشن کردن سینک', 'دکمهٔ فلش‌های گرد بالا ← ورود با GitHub ← کد رو وارد کن و Authorize.'],
-      ['اسکن با گوشی', 'QR رو با دوربین گوشی اسکن کن و بعد «Add to Home screen». یه اپ SSH مثل Termius هم نصب کن.']
+      ['نصب روی اندروید', 'اپ اندروید رو دانلود کن، بخش سینک رو باز کن و QR کامپیوتر رو اسکن کن (یا با GitHub وارد شو). سرورهات فوری میان.']
     ],
     dlTitle: 'آماده‌ای؟', dlSub: 'رایگان، متن‌باز، بدون تبلیغ و بدون حساب پیش ما.',
     foot: 'SSH Servers — متن‌باز از PLUS98IR', support: '☕ حمایت'
@@ -241,6 +243,15 @@ document.getElementById('lang').onclick = function (e) {
   apply();
 };
 apply();
+fetch('https://api.github.com/repos/Plus98ir/SSH-Servers/releases?per_page=30').then(function (r) { return r.json(); }).then(function (list) {
+  for (var i = 0; i < list.length; i++) {
+    var r = list[i];
+    if (r.draft || r.prerelease || r.tag_name.indexOf('android-v') !== 0) continue;
+    var a = (r.assets || []).filter(function (x) { return /\.apk$/.test(x.name); })[0];
+    if (a) document.querySelectorAll('[data-apk]').forEach(function (el) { el.href = a.browser_download_url; });
+    break;
+  }
+}).catch(function () {});
 </script>
 <script data-goatcounter="https://plus98.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script src="https://corenetbase.com/support.js" defer></script>

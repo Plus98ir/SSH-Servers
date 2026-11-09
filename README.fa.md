@@ -31,8 +31,9 @@ TA53aFyGNfSAcrCaJi9QmA9x5W47nPJcf7
 ## دانلود
 
 - **ویندوز:** [`SSH Servers.exe`](https://github.com/Plus98ir/SSH-Servers/releases/latest/download/SSH.Servers.exe). فقط یک فایله و نصب لازم نداره. به WebView2 Runtime نیاز داره که ویندوز ۱۰ و ۱۱ خودشون دارن.
+- **اندروید:** [`SSH-Servers.apk`](https://github.com/Plus98ir/SSH-Servers/releases/download/android-v1.0.0/SSH-Servers.apk). یه کلاینت SSH واقعی با ترمینال داخلی که با برنامه‌ی ویندوز سینک می‌شه.
 - **سایت:** https://corenetbase.com/SSH-Servers/
-- **گوشی (اندروید / آیفون):** https://corenetbase.com/SSH-Servers/app/. بازش کن و از منوی مرورگر **Add to Home screen** رو بزن تا مثل یه اپ نصب بشه.
+- **نسخه‌ی وب (هر گوشی):** https://corenetbase.com/SSH-Servers/app/. بازش کن و از منوی مرورگر **Add to Home screen** رو بزن تا مثل یه اپ نصب بشه.
 
 ## چه کار می‌کنه
 
