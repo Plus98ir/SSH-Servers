@@ -107,6 +107,15 @@ const _s = <String, List<String>>{
         '5. Sync is automatic: on open, after every change and every minute. The newest change always wins.'
   ],
   'support': ['حمایت', 'Support'],
+  'upTitle': ['نسخهٔ جدید آماده‌ست', 'A new version is ready'],
+  'upMsg': ['نسخهٔ فعلی: {n}', 'Your version: {n}'],
+  'upNow': ['دانلود آپدیت', 'Download update'],
+  'upLater': ['بعداً', 'Later'],
+  'upLatest': ['آخرین نسخه رو داری', 'You have the latest version'],
+  'upErr': ['بررسی آپدیت نشد', 'Couldn’t check for updates'],
+  'upCheck': ['بررسی آپدیت', 'Check for updates'],
+  'upHow': ['بعد از دانلود، فایل رو باز کن و «نصب» رو بزن؛ سرورها و تنظیمات سر جاشون می‌مونن.', 'After the download, open the file and tap Install; your servers and settings stay.'],
+  'version': ['نسخه', 'Version'],
 };
 
 String t(String k, [Object? n]) {

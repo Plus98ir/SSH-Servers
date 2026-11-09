@@ -49,13 +49,15 @@ type server struct {
 }
 
 type config struct {
-	Servers    []server         `json:"servers"`
-	SameWindow bool             `json:"sameWindow"`
-	AutoClose  bool             `json:"autoClose"`
-	Lang       string           `json:"lang,omitempty"`
-	Deleted    map[string]int64 `json:"deleted,omitempty"` // id -> delete time (ms), for sync
-	OrderU     int64            `json:"orderU,omitempty"`  // last reorder (ms)
-	Sync       *syncCfg         `json:"sync,omitempty"`
+	Servers     []server         `json:"servers"`
+	SameWindow  bool             `json:"sameWindow"`
+	AutoClose   bool             `json:"autoClose"`
+	Lang        string           `json:"lang,omitempty"`
+	Deleted     map[string]int64 `json:"deleted,omitempty"` // id -> delete time (ms), for sync
+	OrderU      int64            `json:"orderU,omitempty"`  // last reorder (ms)
+	Sync        *syncCfg         `json:"sync,omitempty"`
+	UpdateCheck int64            `json:"updateCheck,omitempty"`
+	Update      *updateInfo      `json:"update,omitempty"`
 }
 
 var (
@@ -188,6 +190,8 @@ func main() {
 	hwnd := uintptr(w.Window())
 	makeFrameless(hwnd)
 	bindAll(hwnd)
+	cleanupOld()
+	go autoCheck()
 	w.SetHtml(uiPage())
 	w.Run()
 }

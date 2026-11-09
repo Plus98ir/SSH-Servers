@@ -9,6 +9,7 @@ import 'store.dart';
 import 'sync.dart';
 import 'sync_screen.dart';
 import 'terminal.dart';
+import 'update.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     Sess.changes.addListener(_re);
     AppState.I.addListener(_re);
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkUpdate(context));
   }
 
   @override

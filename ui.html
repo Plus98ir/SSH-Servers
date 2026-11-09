@@ -109,6 +109,10 @@ input.ltr{direction:ltr;text-align:left;font-family:var(--mono);font-size:13px}
 .preview{font-family:var(--mono);font-size:12px;color:var(--muted);direction:ltr;text-align:left;background:#0e1218;border-radius:8px;padding:7px 10px;margin:4px 0 14px}
 .row{display:flex;gap:8px}
 
+.ver{color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:12px;text-decoration:none}.ver:hover{color:var(--muted)}
+.updpill{font:inherit;font-size:12.5px;font-weight:700;border:0;border-radius:99px;padding:5px 12px;cursor:pointer;background:var(--accent);color:#04140e;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 5px rgba(34,195,142,.18)}}
+.notes{white-space:pre-wrap;font-size:12.5px;color:var(--muted);background:#0e1218;border-radius:10px;padding:10px 12px;max-height:150px;overflow:auto;margin-bottom:14px;direction:ltr;text-align:left;user-select:text}
 footer{display:flex;align-items:center;gap:20px;padding-top:12px;margin-top:6px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
 .toggle{display:flex;align-items:center;gap:9px;cursor:pointer}
 .sw{width:36px;height:20px;border-radius:999px;background:#2a3040;position:relative;transition:.2s;flex:none}
@@ -184,6 +188,9 @@ header{cursor:default}
   <footer>
     <div class="toggle" id="tSame"><div class="sw"></div><span data-i18n="sameWindow"></span></div>
     <div class="toggle" id="tClose"><div class="sw"></div><span data-i18n="autoClose"></span></div>
+    <span style="flex:1"></span>
+    <button class="updpill" id="updBtn" style="display:none"></button>
+    <a class="ver" id="verBtn"></a>
   </footer>
 </div>
 
@@ -202,7 +209,7 @@ header{cursor:default}
 <script>
 const $=s=>document.querySelector(s);
 const L={
- fa:{syHelp:'راهنما',syHelpT:'راهنمای سینک',syHelpB:`<h4>سینک چیه؟</h4><p>لیست سرورهات روی کامپیوتر و گوشی (و هر کامپیوتر دیگه) یکی می‌شه. اختیاریه؛ بدون سینک هم برنامه مثل قبل کار می‌کنه.</p>
+ fa:{upNew:'نسخهٔ جدید {n}',upTitle:'نسخهٔ جدید آماده‌ست',upMsg:'نسخهٔ فعلی: {n}',upNow:'آپدیت کن',upLater:'بعداً',upBusy:'در حال دانلود و نصب…',upLatest:'آخرین نسخه رو داری',upFail:'آپدیت نشد: {n}',upCheck:'بررسی آپدیت',upErr:'بررسی آپدیت نشد',syHelp:'راهنما',syHelpT:'راهنمای سینک',syHelpB:`<h4>سینک چیه؟</h4><p>لیست سرورهات روی کامپیوتر و گوشی (و هر کامپیوتر دیگه) یکی می‌شه. اختیاریه؛ بدون سینک هم برنامه مثل قبل کار می‌کنه.</p>
 <h4>راه‌اندازی (یک بار)</h4><ol><li>«ورود با GitHub» رو بزن. صفحهٔ GitHub باز می‌شه و کد برات کپی شده؛ Paste کن و Authorize رو بزن. حساب GitHub نداری؟ همون‌جا با یه ایمیل رایگان بساز.</li>
 <li>QR که نشون داده می‌شه رو با دوربین گوشی اسکن کن؛ صفحهٔ گوشی باز می‌شه و وصله.</li>
 <li>روی گوشی از منوی مرورگر «Add to Home screen» رو بزن تا مثل اپ نصب بشه. برای باز کردن سرورها یه اپ SSH مثل Termius یا ConnectBot لازمه.</li>
@@ -228,7 +235,7 @@ const L={
   hcAlwaysNote:'برای سرورهایی که زیاد Rebuildشون می‌کنی خوبه. بعداً از «ویرایش» خاموشش کن.',hcAccept:'قبول کن و ادامه بده',hcDone:'کلید جدید ذخیره شد',
   autoTrust:'وقتی کلید هویت سرور عوض شد (بعد از Rebuild)، خودکار قبولش کن',
   nkTitle:'ورود بدون رمز به «{n}» دیگه کار نمی‌کنه',nkMsg:'سرور احتمالاً Rebuild شده و کلیدت ازش پاک شده. رمز سرور رو یه بار بنویس تا دوباره نصبش کنم.',nkSkip:'فعلاً با رمز وصل شو',noWT:'Windows Terminal پیدا نشد؛ سرورها با cmd معمولی باز میشن'},
- en:{syHelp:'Guide',syHelpT:'Sync guide',syHelpB:`<h4>What is sync?</h4><p>Your server list becomes the same on your PC, your phone and any other PC. It’s optional; without it the app works as before.</p>
+ en:{upNew:'New version {n}',upTitle:'A new version is ready',upMsg:'Your version: {n}',upNow:'Update now',upLater:'Later',upBusy:'Downloading and installing…',upLatest:'You have the latest version',upFail:'Update failed: {n}',upCheck:'Check for updates',upErr:'Couldn’t check for updates',syHelp:'Guide',syHelpT:'Sync guide',syHelpB:`<h4>What is sync?</h4><p>Your server list becomes the same on your PC, your phone and any other PC. It’s optional; without it the app works as before.</p>
 <h4>Setup (once)</h4><ol><li>Press “Sign in with GitHub”. GitHub opens and the code is already copied — paste it and press Authorize. No GitHub account? Create one for free right there (just an email).</li>
 <li>Scan the QR that appears with your phone camera; the phone page opens already connected.</li>
 <li>On the phone use “Add to Home screen” in the browser menu to install it like an app. To open servers you need an SSH app such as Termius or ConnectBot.</li>
@@ -632,6 +639,26 @@ function syncHelp(){ inSync=false;
 }
 $('#syncBtn').onclick=()=>syncDialog();
 setInterval(()=>{ if(sync.on&&!syncBusy&&!document.hidden) window.syncNow(); },60000);
+
+// ---------- updates
+let upd=null;
+function updDialog(){
+  if(!upd) return;
+  modal(`<h3>${t('upTitle')} · v${esc(upd.latest)}</h3><p>${t('upMsg','v'+esc(upd.current))}</p>
+    ${upd.notes?`<div class="notes">${esc(upd.notes)}</div>`:''}
+    <div class="row"><button class="btn primary" id="uGo">${t('upNow')}</button><button class="btn" id="uNo">${t('upLater')}</button></div>`);
+  $('#uGo').onclick=()=>{ $('#uGo').disabled=true; $('#uGo').textContent=t('upBusy'); window.doUpdate(upd.url); };
+  $('#uNo').onclick=closeModal;
+}
+window.onUpdate=(o,manual)=>{
+  if(o.err){ if(manual) toast(t('upErr'),'err'); return; }
+  if(o.newer){ upd=o; const b=$('#updBtn'); b.textContent='⬆ '+t('upNew','v'+o.latest); b.style.display=''; if(manual) updDialog(); }
+  else if(manual) toast(t('upLatest'),'ok');
+};
+window.onUpdateFail=m=>{ toast(t('upFail',m),'err',6000); if($('#uGo')){ $('#uGo').disabled=false; $('#uGo').textContent=t('upNow'); } };
+$('#updBtn').onclick=updDialog;
+$('#verBtn').onclick=()=>{ toast(t('upCheck')+'…'); window.checkUpdate(); };
+(async()=>{ try{ const v=await window.appVersion(); $('#verBtn').textContent='v'+v; $('#verBtn').title=t('upCheck'); }catch(e){} })();
 
 window.onToast=(m,k)=>toast(m,k||'',k==='err'?5000:3000);
 

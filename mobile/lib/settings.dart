@@ -6,6 +6,7 @@ import 'l10n.dart';
 import 'main.dart';
 import 'ssh.dart';
 import 'store.dart';
+import 'update.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -15,10 +16,14 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   String _pub = '';
+  String _ver = '';
 
   @override
   void initState() {
     super.initState();
+    appVersion().then((v) {
+      if (mounted) setState(() => _ver = v);
+    });
     DeviceKey.get().then((k) {
       if (mounted) setState(() => _pub = k.authorizedLine);
     });
@@ -78,6 +83,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           },
           icon: const Icon(Icons.copy_rounded, size: 18),
           label: Text(t('copyKey')),
+        ),
+        _sec('${t('version')}: ${_ver.isEmpty ? '…' : 'v$_ver'}'),
+        OutlinedButton.icon(
+          onPressed: () => checkUpdate(context, manual: true),
+          icon: const Icon(Icons.system_update_rounded, size: 18),
+          label: Text(t('upCheck')),
         ),
         _sec(t('guide')),
         Container(

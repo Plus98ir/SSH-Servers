@@ -450,6 +450,27 @@ func bindAll(hwnd uintptr) {
 		}
 	})
 
+	w.Bind("appVersion", func() string { return appVersion })
+	w.Bind("checkUpdate", func() {
+		go func() {
+			in := checkUpdate()
+			if in.Err == "" {
+				mu.Lock()
+				cfg.UpdateCheck, cfg.Update = nowMs(), &in
+				saveConfig()
+				mu.Unlock()
+			}
+			js("onUpdate", in, true)
+		}()
+	})
+	w.Bind("doUpdate", func(url string) {
+		go func() {
+			if err := selfUpdate(url); err != nil {
+				js("onUpdateFail", err.Error())
+			}
+		}()
+	})
+
 	w.Bind("fitWindow", func(cw, ch int, dpr float64) { fitWindow(cw, ch, dpr) })
 	w.Bind("dragStart", func() { dragStart() })
 	w.Bind("dragMove", func(dx, dy, dpr float64) { dragMove(dx, dy, dpr) })
