@@ -29,6 +29,8 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "-H windowsg
 ```
 golang.org/x/* are fetched from their GitHub mirrors via `replace` in go.mod (golang.org itself is blocked). Go 1.24 → x/crypto v0.41.0.
 
+- `mobile/` Android app (Flutter): built-in SSH terminal (dartssh2 + xterm), own ed25519 key per phone (secure storage), TOFU host keys, password fallback + key install, GitHub device-flow sign-in (no Worker needed natively), QR scan, same sync format (lib/sync.dart). APK built only by GitHub Actions (`.github/workflows/android.yml`; pub.dev is blocked on this PC). `android/` is generated in CI + `tool/patch_android.py`. Signing: PKCS12 `%USERPROFILE%\.android-keys\ssh-servers.p12` (+ `ssh-servers-keystore.txt`), repo secrets KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS — never regenerate. Tag `android-v*` → release with SSH-Servers.apk. Test on Sadeq's A55 via wireless adb (`adb mdns services`).
+
 ## Gotchas
 - Sync: merge in sync.go and docs/app/sync.js must stay identical (tested Go↔JS encrypt/decrypt + merge). keyOK/autoTrust are device-only, never synced. Every edit stamps `u`, delete → `deleted[id]`, reorder → `orderU`.
 - Sync link = `<syncPage>#g=<gist>&k=<key>&t=<token>`; fragment never reaches a server. iOS home-screen apps have their own storage → paste the link once inside the installed app.
