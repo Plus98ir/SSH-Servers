@@ -157,6 +157,7 @@ var IC = {
   key: '<circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M14.5 8.5l2 2"/>',
   shield: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
   phone: '<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/>',
+  files: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M12 10v6M9 13l3-3 3 3"/>',
   sync: '<path d="M21 12a9 9 0 0 1-15.5 6.2M3 12a9 9 0 0 1 15.5-6.2"/><path d="M21 4v5h-5M3 20v-5h5"/>'
 };
 var T = {
@@ -170,6 +171,7 @@ var T = {
     fTitle: 'Everything you do with SSH, without typing commands', fSub: 'Each server is a card. Click it and you’re in.',
     feat: [
       ['click', 'One click', 'Click a card (or press 1–9) and ssh opens straight in Windows Terminal, in a new tab or its own window.'],
+      ['files', 'Files over SFTP', 'A built-in file manager: drag files and folders in to upload, download, rename, delete, chmod, and edit config files right in the app.'],
       ['split', 'Many servers at once', 'Open servers side by side or in tabs, or run one command on all of them and see every result.'],
       ['key', 'Passwordless login', 'Enter the password once; the app installs your SSH key on the server. The password is never saved.'],
       ['shield', 'Rebuilt server? No problem', 'Changed host key is shown and fixed in one click. If the key login broke too, it reinstalls the key.'],
@@ -203,6 +205,7 @@ var T = {
     fTitle: 'همهٔ کارهای SSH، بدون تایپ دستور', fSub: 'هر سرور یه کارته. کلیک کن و وارد شو.',
     feat: [
       ['click', 'یک کلیک', 'روی کارت کلیک کن (یا ۱ تا ۹ رو بزن) تا ssh مستقیم توی Windows Terminal باز بشه، توی تب جدید یا پنجرهٔ جدا.'],
+      ['files', 'فایل‌ها با SFTP', 'فایل‌منیجر داخلی: فایل و پوشه رو بکش و رها کن تا آپلود بشه، دانلود، تغییر نام، حذف، chmod و ویرایش فایل‌های کانفیگ همون‌جا.'],
       ['split', 'چند سرور با هم', 'سرورها رو کنار هم یا توی تب‌ها باز کن، یا یه دستور رو روی همه اجرا کن و نتیجهٔ هر کدوم رو ببین.'],
       ['key', 'ورود بدون رمز', 'یک بار پسورد رو بزن؛ برنامه کلید SSH رو روی سرور نصب می‌کنه. پسورد هیچ‌جا ذخیره نمی‌شه.'],
       ['shield', 'سرور از نو نصب شده؟ مشکلی نیست', 'host key جدید نشون داده می‌شه و با یک کلیک درست می‌شه. اگه ورود با کلید هم خراب شده باشه، کلید دوباره نصب می‌شه.'],

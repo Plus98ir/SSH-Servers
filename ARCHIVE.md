@@ -1,5 +1,8 @@
 # SSH Servers — ARCHIVE.md
 
+## 2026-11-11
+- SFTP file manager in the Windows app: folder button on each card / "Files (SFTP)" in the card menu → full-window browser (breadcrumbs + typed path, filter, hidden files, sort), upload by button or drag & drop from Explorer (files + folders, replace/skip prompt), download (files/folders → Downloads, open / show in folder), new folder/file, rename, delete, chmod dialog, built-in text editor (Ctrl+S, keeps CRLF), transfer list with progress/speed/cancel. Key login, or password (memory only) with optional key install; host-key-changed dialog reused.
+
 ## 2026-11-09
 - Site fix: removed the "returning phone → web app" redirect; docs/sw.js is now a kill switch that unregisters the old root service worker (verified on the A55: landing page with both download buttons). Android banner inside the web app. Repo description/topics + site descriptions.json updated for the Android app.
 - Released Android 1.0.0 (tag android-v1.0.0, signed SSH-Servers.apk); calmer gesture swipes (axis lock). Site + README: Download for Android.

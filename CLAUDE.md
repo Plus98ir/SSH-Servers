@@ -17,6 +17,7 @@ Click a card → `ssh` opens straight in Windows Terminal. Also: split/tab multi
 - `launch.go` Windows Terminal command lines (single / tabs / split grid)
 - `window.go` frameless window, auto-size, drag
 - `ui.html` the whole UI (strings in `L.fa` / `L.en`)
+- `sftp.go` built-in SFTP file manager (pkg/sftp): one session per server (key, else password kept in memory only; auto-reconnect + keepalive), list/mkdir/touch/rename/remove/chmod/read/write via `fsDo` → `onFs`, downloads straight to `%USERPROFILE%\Downloads`, uploads streamed from the page in 1 MB base64 chunks (`upStart`/`upChunk`/`upEnd`, flow control via `onUpAck`). `sftp_test.go` runs it against an in-process SSH+SFTP server.
 - `sync.go` Gist sync: merge rules, AES-GCM, GitHub API, sync link + QR, "Sign in with GitHub" (device flow, `githubClientID`)
 - `docs/index.html` website / download page (bilingual); redirects sync links, installed app and returning phones to `docs/app/`
 - `docs/app/` phone PWA (GitHub Pages serves /docs) (index.html, app.js, sync.js = same format + merge as sync.go, sw.js, manifest). Hosted at `syncPage` (sync.go).
@@ -44,6 +45,6 @@ golang.org/x/* are fetched from their GitHub mirrors via `replace` in go.mod (go
 - Script/CLI output in English; end-user pages bilingual FA + EN, dark, modern, mobile-ready.
 - Tools universal — not tied to Sadeq's own servers.
 - Build smart instead of asking how; ask only before destructive actions.
-- Never bump a version number without asking.
+- Versioning: every 5 builds = one version upgrade (Sadeq, 2026-11-11). Count builds in TASKS.md ("Version count"); no bump in between.
 - No README unless asked.
 - Get it right the first time — he is short on time and tokens.

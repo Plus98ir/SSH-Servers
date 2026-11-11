@@ -471,6 +471,8 @@ func bindAll(hwnd uintptr) {
 		}()
 	})
 
+	bindFiles()
+
 	w.Bind("fitWindow", func(cw, ch int, dpr float64) { fitWindow(cw, ch, dpr) })
 	w.Bind("dragStart", func() { dragStart() })
 	w.Bind("dragMove", func(dx, dy, dpr float64) { dragMove(dx, dy, dpr) })

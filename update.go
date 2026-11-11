@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	appVersion  = "1.0.0"
+	appVersion  = "1.1.0"
 	releasesAPI = "https://api.github.com/repos/Plus98ir/SSH-Servers/releases?per_page=30"
 	exeAsset    = "SSH.Servers.exe"
 )

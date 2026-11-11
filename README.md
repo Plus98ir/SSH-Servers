@@ -39,6 +39,7 @@ TA53aFyGNfSAcrCaJi9QmA9x5W47nPJcf7
 **On Windows**
 - Each server is a card. Click one (or press `1`–`9`) and `ssh` opens straight in Windows Terminal, in a new tab or its own window.
 - **Multiple servers:** open several servers side by side (split panes) or in tabs, or run one command on all of them and see each result.
+- **Files (SFTP):** a built-in file manager for every server. Browse folders, upload by dragging files or folders from Explorer, download to your Downloads folder, rename, delete, change permissions, and edit config files right in the app. Transfers show progress and can be cancelled.
 - **Passwordless login:** enter the password once and the app puts your SSH key on the server. The password is never saved.
 - **Rebuilt server?** When a server's host key changes, the app shows the new fingerprint and fixes `known_hosts` in one click. If the key login broke too, it asks for the password once and reinstalls the key.
 - Live ping on every card, old routers and modems (`ssh-rsa`) supported, FA / EN.
