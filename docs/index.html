@@ -28,6 +28,8 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Plus98ir/SSH-Servers/main/SSH-Servers.png">
 <link rel="icon" href="img/icon.png">
 <style>
+:root{--gutter:max(50px,3vw)}@media (max-width:640px){:root{--gutter:16px}}
+
 @font-face{font-family:Vazirmatn;font-weight:400;font-display:swap;src:url(app/fonts/Vazirmatn-Regular.woff2) format('woff2')}
 @font-face{font-family:Vazirmatn;font-weight:500;font-display:swap;src:url(app/fonts/Vazirmatn-Medium.woff2) format('woff2')}
 @font-face{font-family:Vazirmatn;font-weight:700;font-display:swap;src:url(app/fonts/Vazirmatn-Bold.woff2) format('woff2')}
@@ -37,8 +39,8 @@ html{scroll-behavior:smooth;background:var(--bg)}
 body{font-family:Vazirmatn,system-ui,"Segoe UI",Tahoma,sans-serif;color:var(--text);font-size:16px;line-height:1.7;
   background:radial-gradient(1100px 600px at 90% -10%,rgba(34,195,142,.16),transparent 60%),radial-gradient(900px 600px at -10% 40%,rgba(26,155,215,.12),transparent 60%),var(--bg)}
 a{color:inherit}
-main{width:100%;padding:24px 32px}
-@media (max-width:700px){main{padding:16px}}
+main{width:100%;padding:24px var(--gutter)}
+@media (max-width:700px){main{padding:16px var(--gutter)}}
 nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:700;font-size:19px}
 .brand img{width:40px;height:40px;border-radius:11px}
