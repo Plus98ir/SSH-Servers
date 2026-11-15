@@ -1,0 +1,49 @@
+# Publishes docs/ with the release files under dl/, so downloads come from corenetbase.com:
+# release-assets.githubusercontent.com (where GitHub's download links go) is blocked in Iran.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths: [docs/**, .github/workflows/pages.yml]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Site + release files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp -r docs _site
+          mkdir -p _site/dl
+          # Windows exe = the "latest" release (v*); the APK = the newest android-v* release
+          gh release download -R "$GITHUB_REPOSITORY" -p SSH.Servers.exe -D _site/dl
+          tag=$(gh release list -R "$GITHUB_REPOSITORY" --exclude-drafts --exclude-pre-releases -L 50 \
+            --json tagName -q '[.[].tagName | select(startswith("android-v"))][0]')
+          gh release download "$tag" -R "$GITHUB_REPOSITORY" -p SSH-Servers.apk -D _site/dl
+          ls -l _site/dl
+          test -s _site/dl/SSH.Servers.exe && test -s _site/dl/SSH-Servers.apk
+      - uses: actions/upload-pages-artifact@v3
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -33,8 +33,8 @@ One click into your SSH servers on Windows. The same list is on your phone and s
 
 ## Download
 
-- **Windows:** [`SSH Servers.exe`](https://github.com/Plus98ir/SSH-Servers/releases/latest/download/SSH.Servers.exe). It's one file with nothing to install. It needs the WebView2 Runtime, which Windows 10/11 already has.
-- **Android:** [`SSH-Servers.apk`](https://github.com/Plus98ir/SSH-Servers/releases/download/android-v1.0.0/SSH-Servers.apk). A real SSH client with a built-in terminal, synced with the Windows app.
+- **Windows:** [`SSH Servers.exe`](https://corenetbase.com/SSH-Servers/dl/SSH.Servers.exe). It's one file with nothing to install. It needs the WebView2 Runtime, which Windows 10/11 already has.
+- **Android:** [`SSH-Servers.apk`](https://corenetbase.com/SSH-Servers/dl/SSH-Servers.apk). A real SSH client with a built-in terminal, synced with the Windows app.
 - **Website:** https://corenetbase.com/SSH-Servers/
 - **Web version (any phone):** https://corenetbase.com/SSH-Servers/app/. Open it and use **Add to Home screen** to install it like an app.
 
