@@ -2,7 +2,7 @@
 _Updated 2026-11-15_
 
 ## Now
-- [ ] Ask Sadeq: the exe's own update check (update.go) still uses api.github.com + GitHub downloads, both blocked in Iran without VPN. Fix = read corenetbase.com/SSH-Servers/dl/ instead; needs a new exe release (v1.1.1), so only with his OK.
+- [ ] LATER (Sadeq 2026-11-15: "later, not now"; don't bring it up unless he asks): the exe's own update check (update.go) still uses api.github.com + GitHub downloads, both blocked in Iran without VPN. Fix = read corenetbase.com/SSH-Servers/dl/ instead; needs a new exe release (v1.1.1), so only with his OK.
 - Windows v1.1.0 released (SFTP file manager). Sadeq to try it on real servers.
 
 ## Next
