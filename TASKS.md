@@ -1,7 +1,8 @@
 # SSH Servers — TASKS.md
-_Updated 2026-11-11_
+_Updated 2026-11-15_
 
 ## Now
+- [ ] Ask Sadeq: the exe's own update check (update.go) still uses api.github.com + GitHub downloads, both blocked in Iran without VPN. Fix = read corenetbase.com/SSH-Servers/dl/ instead; needs a new exe release (v1.1.1), so only with his OK.
 - Windows v1.1.0 released (SFTP file manager). Sadeq to try it on real servers.
 
 ## Next

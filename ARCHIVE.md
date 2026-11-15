@@ -1,5 +1,8 @@
 # SSH Servers — ARCHIVE.md
 
+
+## 2026-11-15
+- Downloads opened only with VPN (release-assets.githubusercontent.com blocked in Iran; the page also used api.github.com to find the APK). Now served from corenetbase.com/SSH-Servers/dl/ via the Pages workflow; README no longer needs a new APK link per Android release.
 ## 2026-11-11
 - SFTP file manager in the Windows app: folder button on each card / "Files (SFTP)" in the card menu → full-window browser (breadcrumbs + typed path, filter, hidden files, sort), upload by button or drag & drop from Explorer (files + folders, replace/skip prompt), download (files/folders → Downloads, open / show in folder), new folder/file, rename, delete, chmod dialog, built-in text editor (Ctrl+S, keeps CRLF), transfer list with progress/speed/cancel. Key login, or password (memory only) with optional key install; host-key-changed dialog reused.
 
