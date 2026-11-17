@@ -42,6 +42,7 @@ golang.org/x/* are fetched from their GitHub mirrors via `replace` in go.mod (go
 - After a rebuild the key on the server is gone too → app asks for the password once and reinstalls the key.
 - `legacy: true` (Modem/Dropbear) adds old ssh-rsa/kex options to the ssh command.
 - Bound functions run on the UI thread — anything slow must run in a goroutine and answer via `js("onX", …)`.
+- The page is loaded from a string, so its localStorage is gone after a restart: keep page settings with `P.get/P.set` (ui.html) → `setPref` → `cfg.Prefs` in servers.json, injected back as `window.PREFS` by `uiPage()`.
 - The old exe's source was lost (built in a temp sandbox, Oct 2026); ui.html was recovered from inside that exe.
 
 ## Working rules

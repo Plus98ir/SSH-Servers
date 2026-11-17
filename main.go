@@ -65,16 +65,19 @@ type server struct {
 }
 
 type config struct {
-	Servers     []server         `json:"servers"`
-	SameWindow  bool             `json:"sameWindow"`
-	AutoClose   bool             `json:"autoClose"`
-	Lang        string           `json:"lang,omitempty"`
-	Deleted     map[string]int64 `json:"deleted,omitempty"` // id -> delete time (ms), for sync
-	OrderU      int64            `json:"orderU,omitempty"`  // last reorder (ms)
-	Sync        *syncCfg         `json:"sync,omitempty"`
-	ExtTerm     bool             `json:"extTerm,omitempty"` // open servers in Windows Terminal instead of the built-in terminal
-	UpdateCheck int64            `json:"updateCheck,omitempty"`
-	Update      *updateInfo      `json:"update,omitempty"`
+	Servers    []server         `json:"servers"`
+	SameWindow bool             `json:"sameWindow"`
+	AutoClose  bool             `json:"autoClose"`
+	Lang       string           `json:"lang,omitempty"`
+	Deleted    map[string]int64 `json:"deleted,omitempty"` // id -> delete time (ms), for sync
+	OrderU     int64            `json:"orderU,omitempty"`  // last reorder (ms)
+	Sync       *syncCfg         `json:"sync,omitempty"`
+	ExtTerm    bool             `json:"extTerm,omitempty"`
+	// small page settings (view mode, terminal font size, file sort, command history); device-only.
+	// The page is loaded from a string, so its localStorage doesn't survive a restart.
+	Prefs       map[string]string `json:"prefs,omitempty"` // open servers in Windows Terminal instead of the built-in terminal
+	UpdateCheck int64             `json:"updateCheck,omitempty"`
+	Update      *updateInfo       `json:"update,omitempty"`
 	// window size the user picked (CSS px) per view ("main", "fm"); device-only, never synced
 	Win map[string]winSize `json:"win,omitempty"`
 }
@@ -186,7 +189,11 @@ func uiPage() string {
 		}
 		return s
 	}
+	mu.Lock()
+	prefs, _ := json.Marshal(cfg.Prefs) // escapes < and >, safe inside <script>
+	mu.Unlock()
 	page := strings.Replace(uiHTML, "/*FONTS*/", fonts+xtermCSS, 1)
+	page = strings.Replace(page, "/*PREFS*/", "window.PREFS="+string(prefs)+";", 1)
 	return strings.Replace(page, "/*XTERM*/", strings.Join([]string{noMap(xtermJS), noMap(xtermFitJS), noMap(xtermLinksJS)}, ";\n"), 1)
 }
 

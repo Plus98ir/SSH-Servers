@@ -430,7 +430,10 @@ html[dir=rtl] .fr .nm,html[dir=rtl] .xf .xn,html[dir=rtl] .fmtitle span{text-ali
 <div class="toast" id="toast"></div>
 
 <script>/*XTERM*/</script>
+<script>/*PREFS*/</script>
 <script>
+// page settings, kept by the app in servers.json (localStorage is lost on restart)
+const P={get:k=>{ const v=(window.PREFS||{})[k]; return v===undefined?null:v; }, set:(k,v)=>{ (window.PREFS=window.PREFS||{})[k]=String(v); try{ window.setPref(k,String(v)); }catch(e){} }};
 const $=s=>document.querySelector(s);
 const L={
  fa:{upNew:'نسخهٔ جدید {n}',upTitle:'نسخهٔ جدید آماده‌ست',upMsg:'نسخهٔ فعلی: {n}',upNow:'آپدیت کن',upLater:'بعداً',upBusy:'در حال دانلود و نصب…',upLatest:'آخرین نسخه رو داری',upFail:'آپدیت نشد: {n}',upCheck:'بررسی آپدیت',upErr:'بررسی آپدیت نشد',syHelp:'راهنما',syHelpT:'راهنمای سینک',syHelpB:`<h4>سینک چیه؟</h4><p>لیست سرورهات روی کامپیوتر و گوشی (و هر کامپیوتر دیگه) یکی می‌شه. اختیاریه؛ بدون سینک هم برنامه مثل قبل کار می‌کنه.</p>
@@ -575,8 +578,8 @@ function render(){
   fit();
 }
 const VIEWS={tiles:{cols:3,h:200,gap:16,max:3},compact:{cols:4,h:74,gap:10,max:5},list:{cols:1,h:50,gap:6,max:9}};
-let view='tiles'; try{ const v=localStorage.getItem('view'); if(VIEWS[v]) view=v; }catch(e){}
-$('#vsw').onclick=e=>{ const b=e.target.closest('button'); if(!b||b.dataset.v===view) return; view=b.dataset.v; try{ localStorage.setItem('view',view); }catch(x){} render(); };
+let view='tiles'; try{ const v=P.get('view'); if(VIEWS[v]) view=v; }catch(e){}
+$('#vsw').onclick=e=>{ const b=e.target.closest('button'); if(!b||b.dataset.v===view) return; view=b.dataset.v; try{ P.set('view',view); }catch(x){} render(); };
 let lastFit='', resizing=false;
 function fit(big){
   if(resizing) return;
@@ -725,7 +728,7 @@ $('#mDel').onclick=()=>{
 
 $('#lang').onclick=async e=>{ const b=e.target.closest('button'); if(!b||b.dataset.l===lang) return; lang=b.dataset.l; applyLang(); render(); try{ await window.setLang(lang); }catch(x){} };
 let sel=null, runSeq=0, runBusy=0, hist=[];
-try{ hist=JSON.parse(localStorage.getItem('cmdHist')||'[]'); }catch(e){}
+try{ hist=JSON.parse(P.get('cmdHist')||'[]'); }catch(e){}
 function multiDialog(){
   if(!sel) sel=new Set(st.servers.map(s=>s.id));
   sel=new Set([...sel].filter(id=>st.servers.some(s=>s.id===id)));
@@ -757,7 +760,7 @@ function multiDialog(){
   const go=async()=>{
     const c=cmd.value.trim(); if(!c){ cmd.focus(); return; }
     if(!sel.size) return toast(t('pickOne'),'err');
-    hist=[c,...hist.filter(x=>x!==c)].slice(0,20); try{ localStorage.setItem('cmdHist',JSON.stringify(hist)); }catch(e){}
+    hist=[c,...hist.filter(x=>x!==c)].slice(0,20); try{ P.set('cmdHist',JSON.stringify(hist)); }catch(e){}
     hi=-1;
     const id=++runSeq, list=st.servers.filter(s=>sel.has(s.id));
     $('#results').innerHTML=list.map(s=>`<div class="res" data-r="${esc(s.id)}"><div class="rh"><span class="cdot" style="width:9px;height:9px;border-radius:3px;background:${s.color||'#495057'}"></span><b>${esc(s.name)}</b><span class="rs"><span class="mini"></span>${t('running')}</span></div><pre></pre></div>`).join('');
@@ -863,7 +866,7 @@ window.onNeedKey=async id=>{
 // ---------- file manager (SFTP)
 let fm=null;            // {id,s,path,home,items,vis,sel:Set,anchor,ready}
 let fmSort={k:'n',d:1}, fmShowHidden=true;
-try{ fmShowHidden=localStorage.getItem('fmHidden')!=='0'; const so=JSON.parse(localStorage.getItem('fmSort')||'null'); if(so&&so.k) fmSort=so; }catch(e){}
+try{ fmShowHidden=P.get('fmHidden')!=='0'; const so=JSON.parse(P.get('fmSort')||'null'); if(so&&so.k) fmSort=so; }catch(e){}
 const xfRows={};        // transfer id -> {sid,k,n,done,total,st,e,p,t0}
 const upQ=[], upAck={}; let upRunning=false, upSeq=0, fsSeq=0, refT=0;
 const fsWait={};
@@ -1025,7 +1028,7 @@ const selPaths=()=>selItems().map(x=>pj(fm.path,x.n));
 $('#fmRows').addEventListener('click',e=>{
   if(!fm) return;
   const hk=e.target.closest('.hd [data-k]');
-  if(hk){ const k=hk.dataset.k; fmSort=fmSort.k===k?{k,d:-fmSort.d}:{k,d:k==='n'?1:-1}; try{ localStorage.setItem('fmSort',JSON.stringify(fmSort)); }catch(x){} renderFm(new Set(selItems().map(x=>x.n))); return; }
+  if(hk){ const k=hk.dataset.k; fmSort=fmSort.k===k?{k,d:-fmSort.d}:{k,d:k==='n'?1:-1}; try{ P.set('fmSort',JSON.stringify(fmSort)); }catch(x){} renderFm(new Set(selItems().map(x=>x.n))); return; }
   const r=e.target.closest('.fr[data-i]');
   if(!r){ fm.sel.clear(); paintSel(); return; }
   const i=+r.dataset.i;
@@ -1200,7 +1203,7 @@ $('#fmNewFile').onclick=()=>fm&&fm.ready&&fmNewFile();
 $('#fmFilter').oninput=()=>fm&&fm.ready&&renderFm();
 $('#fmUpBtn').onclick=e=>{ e.stopPropagation(); if(!fm||!fm.ready) return; const r=e.currentTarget.getBoundingClientRect();
   popMenu([{ic:IC.up,l:t('fmUpFiles'),f:()=>$('#fmPick').click()},{ic:IC.open,l:t('fmUpDir'),f:()=>$('#fmPickDir').click()}],lang==='fa'?r.left:r.right-180,r.bottom+6); };
-$('#fmHidden').onclick=()=>{ fmShowHidden=!fmShowHidden; $('#fmHidden').classList.toggle('on',fmShowHidden); try{ localStorage.setItem('fmHidden',fmShowHidden?'1':'0'); }catch(e){} if(fm&&fm.ready) renderFm(new Set(selItems().map(x=>x.n))); };
+$('#fmHidden').onclick=()=>{ fmShowHidden=!fmShowHidden; $('#fmHidden').classList.toggle('on',fmShowHidden); try{ P.set('fmHidden',fmShowHidden?'1':'0'); }catch(e){} if(fm&&fm.ready) renderFm(new Set(selItems().map(x=>x.n))); };
 $('#fmDl').onclick=()=>{ try{ window.openDownloads(); }catch(e){} };
 $('#fmPick').onchange=e=>{ const fl=[...e.target.files].map(f=>({file:f,rel:f.name})); e.target.value=''; startUploads(fl,fm&&fm.path); };
 $('#fmPickDir').onchange=e=>{ const fl=[...e.target.files].map(f=>({file:f,rel:f.webkitRelativePath||f.name})); e.target.value=''; startUploads(fl,fm&&fm.path); };
@@ -1424,7 +1427,7 @@ window.onToast=(m,k)=>toast(m,k||'',k==='err'?5000:3000);
 
 // ---------- built-in terminal (xterm.js): one SSH shell per tab, tabs or side by side
 const TM={tabs:[],active:-1,split:false,seq:0,shown:false,byTid:{}};
-let tmFont=14; try{ const f=+localStorage.getItem('tmFont'); if(f>=9&&f<=28) tmFont=f; }catch(e){}
+let tmFont=14; try{ const f=+P.get('tmFont'); if(f>=9&&f<=28) tmFont=f; }catch(e){}
 const TM_THEME={background:'#0b0e13',foreground:'#d8dee9',cursor:'#22c38e',cursorAccent:'#0b0e13',selectionBackground:'rgba(34,195,142,.30)',
   black:'#1c212b',red:'#ff6b7a',green:'#3ddc97',yellow:'#f5c46b',blue:'#5aa9ff',magenta:'#c792ea',cyan:'#4fd1c5',white:'#d8dee9',
   brightBlack:'#5f6878',brightRed:'#ff8b98',brightGreen:'#6ff0b5',brightYellow:'#ffdc8a',brightBlue:'#82c0ff',brightMagenta:'#ddb3ff',brightCyan:'#7fe7dc',brightWhite:'#ffffff'};
@@ -1497,7 +1500,7 @@ function tmCopy(tab){ const s=tab.term.getSelection(); if(!s) return false; wind
 async function tmPaste(tab){ if(tab.state!=='open') return; let s=''; try{ s=await window.clipGet(); }catch(e){} if(s) tab.term.paste(s); tab.term.focus(); }
 function tmRightClick(tab){ if(!tmCopy(tab)) tmPaste(tab); } // like Windows Terminal: copy the selection, else paste
 function tmZoom(d){
-  tmFont=d===0?14:Math.max(9,Math.min(28,tmFont+d)); try{ localStorage.setItem('tmFont',tmFont); }catch(e){}
+  tmFont=d===0?14:Math.max(9,Math.min(28,tmFont+d)); try{ P.set('tmFont',tmFont); }catch(e){}
   TM.tabs.forEach(x=>{ x.term.options.fontSize=tmFont; tmFit(x); });
 }
 function tmKey(e,tab){

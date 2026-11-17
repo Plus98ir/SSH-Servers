@@ -194,6 +194,22 @@ func bindAll(hwnd uintptr) {
 		saveConfig()
 	})
 
+	w.Bind("setPref", func(k, v string) {
+		if k == "" || len(k) > 40 || len(v) > 64<<10 {
+			return
+		}
+		mu.Lock()
+		defer mu.Unlock()
+		if cfg.Prefs == nil {
+			cfg.Prefs = map[string]string{}
+		}
+		if cfg.Prefs[k] == v {
+			return
+		}
+		cfg.Prefs[k] = v
+		saveConfig()
+	})
+
 	w.Bind("pingAll", func() {
 		mu.Lock()
 		list := make([]server, len(cfg.Servers))

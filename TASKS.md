@@ -12,7 +12,7 @@ _Updated 2026-11-17_
 - Next version upgrade (after 5 builds): bump `appVersion` (update.go) / `version:` (mobile/pubspec.yaml, build number must grow), tag `v*` (Windows) or `android-v*` (Android), update the APK link in README.md / README.fa.md
 
 ## Version count (5 builds = one upgrade)
-- Windows: 0/5 since v1.2.0 (2026-11-17)
+- Windows: 1/5 since v1.2.0 (2026-11-17) — v1.2.1: page settings (view, terminal font, file sort, command history) saved in servers.json `prefs` instead of localStorage, which is lost on restart
 - Android: 0/5 since 1.0.0
 
 ## Later
