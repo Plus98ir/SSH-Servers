@@ -338,7 +338,6 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
               padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
               textStyle: _style,
               theme: _theme,
-              cursorType: TerminalCursorType.verticalBar,
             ),
           ),
         ),
@@ -403,7 +402,6 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
               padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
               textStyle: _style,
               theme: _theme,
-              cursorType: TerminalCursorType.verticalBar,
             ),
           ),
           if (_gesture)
