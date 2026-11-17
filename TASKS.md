@@ -11,7 +11,7 @@ _Updated 2026-11-15_
 - Next version upgrade (after 5 builds): bump `appVersion` (update.go) / `version:` (mobile/pubspec.yaml, build number must grow), tag `v*` (Windows) or `android-v*` (Android), update the APK link in README.md / README.fa.md
 
 ## Version count (5 builds = one upgrade)
-- Windows: 0/5 since v1.1.0 (2026-11-11)
+- Windows: 1/5 since v1.1.0 (2026-11-11) — 2026-11-17 fix: app froze on save/delete/move when sync was on
 - Android: 0/5 since 1.0.0
 
 ## Later

@@ -292,7 +292,7 @@ func bindAll(hwnd uintptr) {
 				in.Legacy = old.Legacy && same
 				in.U = nowMs()
 				*old = in
-				defer syncSoon()
+				go syncSoon() // not defer: it locks mu, which is still held here
 				return in, saveConfig()
 			}
 		}
@@ -300,7 +300,7 @@ func bindAll(hwnd uintptr) {
 		in.KeyOK, in.Legacy = false, false
 		in.U = nowMs()
 		cfg.Servers = append(cfg.Servers, in)
-		defer syncSoon()
+		go syncSoon() // not defer: it locks mu, which is still held here
 		return in, saveConfig()
 	})
 
@@ -316,7 +316,7 @@ func bindAll(hwnd uintptr) {
 			cfg.Deleted = map[string]int64{}
 		}
 		cfg.Deleted[id] = nowMs()
-		defer syncSoon()
+		go syncSoon() // not defer: it locks mu, which is still held here
 		return saveConfig()
 	})
 
@@ -330,7 +330,7 @@ func bindAll(hwnd uintptr) {
 		}
 		cfg.Servers[i], cfg.Servers[j] = cfg.Servers[j], cfg.Servers[i]
 		cfg.OrderU = nowMs()
-		defer syncSoon()
+		go syncSoon() // not defer: it locks mu, which is still held here
 		return saveConfig()
 	})
 
