@@ -21,6 +21,7 @@ type uiState struct {
 	WTFound    bool               `json:"wtFound"`
 	Lang       string             `json:"lang"`
 	Win        map[string]winSize `json:"win"`
+	ExtTerm    bool               `json:"extTerm"`
 }
 
 type changedItem struct {
@@ -164,7 +165,7 @@ func bindAll(hwnd uintptr) {
 		defer mu.Unlock()
 		list := make([]server, len(cfg.Servers))
 		copy(list, cfg.Servers)
-		return uiState{Servers: list, SameWindow: cfg.SameWindow, AutoClose: cfg.AutoClose, WTFound: wtPath() != "", Lang: cfg.Lang, Win: cfg.Win}
+		return uiState{Servers: list, SameWindow: cfg.SameWindow, AutoClose: cfg.AutoClose, WTFound: wtPath() != "", Lang: cfg.Lang, Win: cfg.Win, ExtTerm: cfg.ExtTerm}
 	})
 
 	w.Bind("setLang", func(l string) {
@@ -185,6 +186,8 @@ func bindAll(hwnd uintptr) {
 			cfg.SameWindow = v
 		case "autoClose":
 			cfg.AutoClose = v
+		case "extTerm":
+			cfg.ExtTerm = v
 		default:
 			return
 		}
@@ -478,6 +481,7 @@ func bindAll(hwnd uintptr) {
 	})
 
 	bindFiles()
+	bindTerm()
 
 	w.Bind("fitWindow", func(cw, ch int, dpr float64) { fitWindow(cw, ch, dpr) })
 	w.Bind("dragStart", func() { dragStart() })
@@ -485,7 +489,7 @@ func bindAll(hwnd uintptr) {
 	w.Bind("resizeMove", func(edge string, dx, dy, dpr float64) { resizeMove(edge, dx, dy, dpr) })
 	// resizeEnd remembers the size the user dragged to for this view; size 0 = back to automatic
 	w.Bind("resizeEnd", func(view string, reset bool, dpr float64) map[string]winSize {
-		if view != "main" && view != "fm" {
+		if view != "main" && view != "fm" && view != "term" {
 			view = "main"
 		}
 		mu.Lock()

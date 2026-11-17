@@ -31,6 +31,22 @@ var fontMedium []byte
 //go:embed fonts/Vazirmatn-Bold.woff2
 var fontBold []byte
 
+// built-in terminal: xterm.js (MIT) + JetBrains Mono (OFL)
+var (
+	//go:embed xterm/xterm.js
+	xtermJS string
+	//go:embed xterm/addon-fit.js
+	xtermFitJS string
+	//go:embed xterm/addon-web-links.js
+	xtermLinksJS string
+	//go:embed xterm/xterm.css
+	xtermCSS string
+	//go:embed fonts/JetBrainsMono-Regular.woff2
+	monoRegular []byte
+	//go:embed fonts/JetBrainsMono-Bold.woff2
+	monoBold []byte
+)
+
 const appTitle = "SSH Servers"
 
 // ---------------------------------------------------------------- config
@@ -56,6 +72,7 @@ type config struct {
 	Deleted     map[string]int64 `json:"deleted,omitempty"` // id -> delete time (ms), for sync
 	OrderU      int64            `json:"orderU,omitempty"`  // last reorder (ms)
 	Sync        *syncCfg         `json:"sync,omitempty"`
+	ExtTerm     bool             `json:"extTerm,omitempty"` // open servers in Windows Terminal instead of the built-in terminal
 	UpdateCheck int64            `json:"updateCheck,omitempty"`
 	Update      *updateInfo      `json:"update,omitempty"`
 	// window size the user picked (CSS px) per view ("main", "fm"); device-only, never synced
@@ -159,7 +176,18 @@ func uiPage() string {
 			"@font-face{font-family:Vazirmatn;font-weight:500;src:url(data:font/woff2;base64,%s) format('woff2')}"+
 			"@font-face{font-family:Vazirmatn;font-weight:700;src:url(data:font/woff2;base64,%s) format('woff2')}",
 		b64(fontRegular), b64(fontMedium), b64(fontBold))
-	return strings.Replace(uiHTML, "/*FONTS*/", fonts, 1)
+	fonts += fmt.Sprintf(
+		"@font-face{font-family:'JetBrains Mono';font-weight:400;src:url(data:font/woff2;base64,%s) format('woff2')}"+
+			"@font-face{font-family:'JetBrains Mono';font-weight:700;src:url(data:font/woff2;base64,%s) format('woff2')}",
+		b64(monoRegular), b64(monoBold))
+	noMap := func(s string) string { // the source maps aren't bundled
+		if i := strings.LastIndex(s, "//# sourceMappingURL="); i >= 0 {
+			s = s[:i]
+		}
+		return s
+	}
+	page := strings.Replace(uiHTML, "/*FONTS*/", fonts+xtermCSS, 1)
+	return strings.Replace(page, "/*XTERM*/", strings.Join([]string{noMap(xtermJS), noMap(xtermFitJS), noMap(xtermLinksJS)}, ";\n"), 1)
 }
 
 // ---------------------------------------------------------------- main

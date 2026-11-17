@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	appVersion  = "1.1.2"
+	appVersion  = "1.2.0"
 	releasesAPI = "https://api.github.com/repos/Plus98ir/SSH-Servers/releases?per_page=30"
 	exeAsset    = "SSH.Servers.exe"
 	// the site mirrors the latest release (pages.yml): reachable in Iran without a VPN, GitHub isn't
