@@ -60,16 +60,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                sliver: st.listView
-                    ? SliverList.separated(
-                        itemCount: list.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 8),
-                        itemBuilder: (c, i) => _row(c, list[i]),
-                      )
-                    : SliverGrid(
-                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 240, mainAxisSpacing: 10, crossAxisSpacing: 10, childAspectRatio: 1.05),
-                        delegate: SliverChildBuilderDelegate((c, i) => _card(c, list[i]), childCount: list.length),
-                      ),
+                sliver: switch (st.view) {
+                  'list' => SliverList.separated(
+                      itemCount: list.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      itemBuilder: (c, i) => _row(c, list[i]),
+                    ),
+                  'compact' => SliverGrid(
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 150, mainAxisSpacing: 8, crossAxisSpacing: 8, childAspectRatio: 1.0),
+                      delegate: SliverChildBuilderDelegate((c, i) => _card(c, list[i], small: true), childCount: list.length),
+                    ),
+                  _ => SliverGrid(
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 240, mainAxisSpacing: 10, crossAxisSpacing: 10, childAspectRatio: 1.05),
+                      delegate: SliverChildBuilderDelegate((c, i) => _card(c, list[i]), childCount: list.length),
+                    ),
+                },
               ),
               if (list.isEmpty)
                 SliverToBoxAdapter(
@@ -131,8 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 switch (v) {
                   case 'add':
                     editServer(context, null);
-                  case 'view':
-                    st.setListView(!st.listView);
+                  case 'tiles' || 'compact' || 'list':
+                    st.setView(v);
                   case 'sync':
                     openSync(context);
                   case 'settings':
@@ -141,7 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               itemBuilder: (_) => [
                 _mi('add', Icons.add_rounded, t('addServer')),
-                _mi('view', st.listView ? Icons.grid_view_rounded : Icons.view_agenda_outlined, st.listView ? t('viewTiles') : t('viewList')),
+                _mi('tiles', Icons.grid_view_rounded, t('viewTiles'), on: st.view == 'tiles'),
+                _mi('compact', Icons.apps_rounded, t('viewCompact'), on: st.view == 'compact'),
+                _mi('list', Icons.view_agenda_outlined, t('viewList'), on: st.view == 'list'),
                 _mi('sync', Icons.sync_rounded, t('sync')),
                 _mi('settings', Icons.settings_outlined, t('settings')),
               ],
@@ -197,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
 
-  Widget _card(BuildContext context, Server s) {
+  Widget _card(BuildContext context, Server s, {bool small = false}) {
     final c = hexColor(s.color);
     final hsl = HSLColor.fromColor(c);
     final keyOk = AppState.I.keyOK[s.id] == true;
@@ -209,20 +218,22 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: () => openTerminal(context, s),
         onLongPress: () => _menu(context, s),
         child: Stack(children: [
-          PositionedDirectional(
-            top: 2,
-            end: 2,
-            child: IconButton(icon: const Icon(Icons.more_horiz, color: cDim, size: 20), onPressed: () => _menu(context, s)),
-          ),
+          if (!small)
+            PositionedDirectional(
+              top: 2,
+              end: 2,
+              child: IconButton(icon: const Icon(Icons.more_horiz, color: cDim, size: 20), onPressed: () => _menu(context, s)),
+            ),
+          if (small && keyOk) const PositionedDirectional(top: 8, end: 8, child: Icon(Icons.key_rounded, size: 13, color: cAccent)),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: small ? 6 : 10),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Container(
-                  width: 52,
-                  height: 52,
+                  width: small ? 40 : 52,
+                  height: small ? 40 : 52,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(small ? 12 : 15),
                     gradient: LinearGradient(
                       colors: [hsl.withLightness((hsl.lightness + .12).clamp(0, 1)).toColor(), hsl.withLightness((hsl.lightness - .08).clamp(0, 1)).toColor()],
                       begin: Alignment.topLeft,
@@ -231,18 +242,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Center(
                     child: Text(s.name.isEmpty ? '?' : s.name.characters.first.toUpperCase(),
-                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
+                        style: TextStyle(color: Colors.white, fontSize: small ? 16 : 20, fontWeight: FontWeight.w700)),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                SizedBox(height: small ? 7 : 10),
+                Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w700, fontSize: small ? 13 : 15)),
                 const SizedBox(height: 2),
-                Text(s.addr,
+                Text(small ? s.host : s.addr,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textDirection: TextDirection.ltr,
-                    style: const TextStyle(fontFamily: 'monospace', fontSize: 11.5, color: cMuted)),
-                if (keyOk) ...[
+                    style: TextStyle(fontFamily: 'JetBrainsMono', fontSize: small ? 10 : 11.5, color: cMuted)),
+                if (keyOk && !small) ...[
                   const SizedBox(height: 6),
                   Row(mainAxisSize: MainAxisSize.min, children: [
                     const Icon(Icons.key_rounded, size: 13, color: cAccent),
@@ -258,9 +269,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  PopupMenuItem<String> _mi(String v, IconData i, String label) => PopupMenuItem(
+  PopupMenuItem<String> _mi(String v, IconData i, String label, {bool on = false}) => PopupMenuItem(
         value: v,
-        child: Row(children: [Icon(i, size: 20, color: cMuted), const SizedBox(width: 12), Text(label)]),
+        child: Row(children: [
+          Icon(i, size: 20, color: on ? cAccent : cMuted),
+          const SizedBox(width: 12),
+          Text(label, style: TextStyle(color: on ? cAccent : cText)),
+          if (on) ...[const SizedBox(width: 10), const Icon(Icons.check_rounded, size: 18, color: cAccent)],
+        ]),
       );
 
   Widget _row(BuildContext context, Server s) {
@@ -289,11 +305,15 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
-                  Flexible(child: Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
+                  Flexible(
+                      child: Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
                   if (keyOk) ...[const SizedBox(width: 6), const Icon(Icons.key_rounded, size: 14, color: cAccent)],
                 ]),
-                Text(s.addr, maxLines: 1, overflow: TextOverflow.ellipsis, textDirection: TextDirection.ltr,
-                    style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: cMuted)),
+                Text(s.addr,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.ltr,
+                    style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 12, color: cMuted)),
               ]),
             ),
             IconButton(icon: const Icon(Icons.more_horiz, color: cDim), onPressed: () => _menu(context, s)),
@@ -345,7 +365,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   content: Text(t('delQ', s.name)),
                   actions: [
                     TextButton(onPressed: () => Navigator.pop(d, false), child: Text(t('cancel'))),
-                    FilledButton(style: FilledButton.styleFrom(backgroundColor: cDanger, foregroundColor: Colors.white), onPressed: () => Navigator.pop(d, true), child: Text(t('del'))),
+                    FilledButton(
+                        style: FilledButton.styleFrom(backgroundColor: cDanger, foregroundColor: Colors.white),
+                        onPressed: () => Navigator.pop(d, true),
+                        child: Text(t('del'))),
                   ],
                 ),
               );
@@ -375,8 +398,7 @@ void openTerminal(BuildContext context, Server s) {
 Future<void> editServer(BuildContext context, Server? s) async {
   final st = AppState.I;
   final isNew = s == null;
-  final cur = s?.copy() ??
-      Server(id: '', name: '', user: 'root', host: '', color: colors[st.doc.servers.length % colors.length]);
+  final cur = s?.copy() ?? Server(id: '', name: '', user: 'root', host: '', color: colors[st.doc.servers.length % colors.length]);
   final name = TextEditingController(text: cur.name),
       user = TextEditingController(text: cur.user),
       host = TextEditingController(text: cur.host),

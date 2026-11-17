@@ -44,13 +44,20 @@ jobs:
           # Windows exe = the "latest" release (v*); the APK = the newest android-v* release
           gh release download -R "$GITHUB_REPOSITORY" -p SSH.Servers.exe -D _site/dl
           # what the Windows app's update check reads (update.go checkSite)
-          gh release view -R "$GITHUB_REPOSITORY" --json tagName,body             -q '{version: (.tagName | ltrimstr("v")), notes: .body, file: "SSH.Servers.exe"}' > _site/dl/windows.json
+          gh release view -R "$GITHUB_REPOSITORY" --json tagName,assets,body -q '
+            ([.assets[].name | capture("^SSH-Servers-v(?<v>[0-9.]+)-build(?<b>[0-9]+)[.]exe$")] | first) as $m
+            | {version: (.tagName | ltrimstr("v")), build: (($m.b // "0") | tonumber), notes: .body, file: "SSH.Servers.exe"}' > _site/dl/windows.json
           cat _site/dl/windows.json
           tag=$(gh release list -R "$GITHUB_REPOSITORY" --exclude-drafts --exclude-pre-releases -L 50 \
             --json tagName -q '[.[].tagName | select(startswith("android-v"))][0]')
           gh release download "$tag" -R "$GITHUB_REPOSITORY" -p SSH-Servers.apk -D _site/dl
+          # what the Android app's update check reads (mobile/lib/update.dart): version + build from the APK's file name
+          gh release view "$tag" -R "$GITHUB_REPOSITORY" --json tagName,assets,body -q '
+            ([.assets[].name | capture("^SSH-Servers-v(?<v>[0-9.]+)-build(?<b>[0-9]+)[.]apk$")] | first) as $m
+            | {version: ($m.v // (.tagName | ltrimstr("android-v"))), build: (($m.b // "0") | tonumber), notes: .body, file: "SSH-Servers.apk"}' > _site/dl/android.json
+          cat _site/dl/android.json
           ls -l _site/dl
-          test -s _site/dl/SSH.Servers.exe && test -s _site/dl/SSH-Servers.apk && test -s _site/dl/windows.json
+          test -s _site/dl/SSH.Servers.exe && test -s _site/dl/SSH-Servers.apk && test -s _site/dl/windows.json && test -s _site/dl/android.json
       - uses: actions/upload-pages-artifact@v3
   deploy:
     needs: build

@@ -21,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    appVersion().then((v) {
+    appVersionLabel().then((v) {
       if (mounted) setState(() => _ver = v);
     });
     DeviceKey.get().then((k) {

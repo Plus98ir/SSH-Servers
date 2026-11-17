@@ -27,7 +27,9 @@ class AppState extends ChangeNotifier {
   Map<String, String> hostKeys = {}; // host:port -> fingerprint
   double fontSize = 13;
   bool keepAwake = true;
-  bool listView = false;
+  String view = 'tiles'; // tiles | compact | list
+  bool get listView => view == 'list';
+  bool split = true; // side by side terminals when the screen is wide (landscape / tablet)
 
   /// shown as a toast by the UI
   final messages = StreamController<(String, bool)>.broadcast();
@@ -46,7 +48,9 @@ class AppState extends ChangeNotifier {
     lastSync = _p.getInt('lastSync') ?? 0;
     fontSize = _p.getDouble('fontSize') ?? 13;
     keepAwake = _p.getBool('keepAwake') ?? true;
-    listView = _p.getBool('listView') ?? false;
+    view = _p.getString('view') ?? ((_p.getBool('listView') ?? false) ? 'list' : 'tiles');
+    if (!const ['tiles', 'compact', 'list'].contains(view)) view = 'tiles';
+    split = _p.getBool('split') ?? true;
     final s = await _sec.read(key: 'sync');
     if (s != null) sync = SyncCfg.fromJson(jsonDecode(s) as Map<String, dynamic>);
     Timer.periodic(const Duration(minutes: 1), (_) {
@@ -79,9 +83,15 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setListView(bool v) {
-    listView = v;
-    _p.setBool('listView', v);
+  void setView(String v) {
+    view = v;
+    _p.setString('view', v);
+    notifyListeners();
+  }
+
+  void setSplit(bool v) {
+    split = v;
+    _p.setBool('split', v);
     notifyListeners();
   }
 

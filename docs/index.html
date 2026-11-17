@@ -87,6 +87,7 @@ ul.chk li::before{content:"";position:absolute;inset-inline-start:0;top:6px;widt
 footer{margin-top:50px;padding:24px 0 10px;border-top:1px solid var(--line);color:var(--dim);font-size:14px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 footer a{color:var(--muted);text-decoration:none}
 [dir=rtl] .shots .pc{margin-inline-start:0}
+.btn .ver{font-size:.8em;opacity:.75;font-weight:500;direction:ltr;unicode-bidi:isolate}
 </style>
 </head>
 <body>
@@ -240,7 +241,7 @@ function apply() {
   var L = T[lang];
   document.documentElement.lang = lang; document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
   document.title = L.title;
-  document.querySelectorAll('[data-i]').forEach(function (el) { el.innerHTML = L[el.dataset.i]; });
+  document.querySelectorAll('[data-i]').forEach(function (el) { el.innerHTML = L[el.dataset.i] + (VER[el.dataset.i] ? ' <span class="ver">v' + VER[el.dataset.i] + '</span>' : ''); });
   document.querySelectorAll('[data-src-' + lang + ']').forEach(function (el) { el.src = el.getAttribute('data-src-' + lang); });
   document.getElementById('feat').innerHTML = L.feat.map(function (f) { return '<div class="f"><div class="ic">' + svg(IC[f[0]]) + '</div><h3>' + f[1] + '</h3><p>' + f[2] + '</p></div>'; }).join('');
   document.getElementById('syncList').innerHTML = L.sync.map(function (s) { return '<li>' + s + '</li>'; }).join('');
@@ -252,7 +253,16 @@ document.getElementById('lang').onclick = function (e) {
   lang = b.dataset.l; try { localStorage.setItem('ssh.site.lang', lang); } catch (x) {}
   apply();
 };
+// version + build on the download buttons (dl/*.json are written by pages.yml from the releases)
+var VER = {};
 apply();
+[['dlWin', 'dl/windows.json'], ['dlAnd', 'dl/android.json']].forEach(function (x) {
+  fetch(x[1], { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) {
+    if (!j || !j.version) return;
+    VER[x[0]] = j.version + (j.build ? ' build ' + j.build : '');
+    apply();
+  }).catch(function () {});
+});
 </script>
 <script data-goatcounter="https://plus98.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script src="https://corenetbase.com/support.js" defer></script>

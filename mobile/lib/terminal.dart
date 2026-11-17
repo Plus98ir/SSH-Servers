@@ -21,6 +21,8 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
   Sess get s => widget.sess;
   final _focus = FocusNode();
   final _tc = TerminalController();
+  final _otherTc = TerminalController();
+  final _otherFocus = FocusNode(canRequestFocus: false);
   Offset _pan = Offset.zero;
   bool _gesture = false;
   DateTime _lastTap = DateTime(0);
@@ -74,6 +76,7 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
     super.initState();
     s.addListener(_re);
     s.ctrl.addListener(_re);
+    Sess.changes.addListener(_re);
     if (AppState.I.keepAwake) WakelockPlus.enable();
     if (widget.fresh) WidgetsBinding.instance.addPostFrameCallback((_) => _connect());
   }
@@ -82,6 +85,8 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
   void dispose() {
     s.removeListener(_re);
     s.ctrl.removeListener(_re);
+    Sess.changes.removeListener(_re);
+    _otherFocus.dispose();
     WakelockPlus.disable();
     _focus.dispose();
     super.dispose();
@@ -199,10 +204,12 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
   // ---------------------------------------------------------------- sessions (+ and grid)
 
   void _openSession(Sess other, {bool fresh = false}) {
-    Navigator.pushReplacement(context, PageRouteBuilder(
-      pageBuilder: (_, __, ___) => TerminalScreen(sess: other, fresh: fresh),
-      transitionDuration: Duration.zero,
-    ));
+    Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => TerminalScreen(sess: other, fresh: fresh),
+          transitionDuration: Duration.zero,
+        ));
   }
 
   void _newSession() {
@@ -213,9 +220,13 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
         child: ListView(shrinkWrap: true, padding: const EdgeInsets.fromLTRB(12, 0, 12, 12), children: [
           for (final sv in list)
             ListTile(
-              leading: CircleAvatar(radius: 16, backgroundColor: hexColor(sv.color), child: Text(sv.name.isEmpty ? '?' : sv.name.characters.first.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700))),
+              leading: CircleAvatar(
+                  radius: 16,
+                  backgroundColor: hexColor(sv.color),
+                  child: Text(sv.name.isEmpty ? '?' : sv.name.characters.first.toUpperCase(),
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700))),
               title: Text(sv.name),
-              subtitle: Text(sv.addr, textDirection: TextDirection.ltr, style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: cMuted)),
+              subtitle: Text(sv.addr, textDirection: TextDirection.ltr, style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 12, color: cMuted)),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               onTap: () {
                 Navigator.pop(c);
@@ -264,7 +275,10 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
                           Expanded(
                             child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                               Text(o.server.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w700)),
-                              Text(o.server.host, maxLines: 1, textDirection: TextDirection.ltr, style: const TextStyle(fontSize: 11, color: cMuted, fontFamily: 'monospace')),
+                              Text(o.server.host,
+                                  maxLines: 1,
+                                  textDirection: TextDirection.ltr,
+                                  style: const TextStyle(fontSize: 11, color: cMuted, fontFamily: 'JetBrainsMono')),
                             ]),
                           ),
                         ]),
@@ -284,61 +298,11 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0E0E0E),
+      backgroundColor: const Color(0xFF0B0E13),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Column(children: [
-          Expanded(
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: Listener(
-                onPointerDown: _pointerDown,
-                onPointerUp: _pointerUp,
-                child: Stack(children: [
-                Positioned.fill(
-                  child: TerminalView(
-                    s.term,
-                    controller: _tc,
-                    focusNode: _focus,
-                    autofocus: true,
-                    // no suggestions / composing: one Enter press is enough on Samsung & Gboard
-                    keyboardType: TextInputType.visiblePassword,
-                    backgroundOpacity: 0,
-                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                    textStyle: TerminalStyle(fontSize: AppState.I.fontSize, fontFamily: 'monospace'),
-                    theme: _theme,
-                  ),
-                ),
-                if (_gesture)
-                  Positioned.fill(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onPanStart: (_) {
-                        _pan = Offset.zero;
-                        _axis = 0;
-                      },
-                      onPanUpdate: _onPan,
-                      onTap: () => _focus.requestFocus(),
-                    ),
-                  ),
-                if (_gesture)
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(color: cAccent.withValues(alpha: .18), borderRadius: BorderRadius.circular(10), border: Border.all(color: cAccent.withValues(alpha: .5))),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        const Icon(Icons.swipe_rounded, size: 16, color: cAccent),
-                        const SizedBox(width: 6),
-                        Text(t('gestureOn'), style: const TextStyle(fontSize: 12, color: cAccent, fontFamily: 'Vazirmatn')),
-                      ]),
-                    ),
-                  ),
-                ]),
-              ),
-            ),
-          ),
+          Expanded(child: _panes()),
           _bar(),
           _keys(),
         ]),
@@ -346,26 +310,155 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
     );
   }
 
+  /// wide screen (landscape / tablet) + more than one session: two terminals side by side
+  bool get _wide => MediaQuery.sizeOf(context).width >= 640;
+  Sess? get _other {
+    final open = Sess.open;
+    final i = open.indexOf(s);
+    if (!AppState.I.split || !_wide || open.length < 2 || i < 0) return null;
+    return open[(i + 1) % open.length];
+  }
+
+  Widget _panes() {
+    final o = _other;
+    if (o == null) return _pane();
+    final first = Sess.open.indexOf(s) < Sess.open.indexOf(o); // keep the list order, so panes don't jump when switching
+    final mine = _framed(_pane(), on: true, name: server.name, color: server.color);
+    final theirs = _framed(
+      Stack(children: [
+        Positioned.fill(
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: TerminalView(
+              o.term,
+              controller: _otherTc,
+              focusNode: _otherFocus,
+              readOnly: true,
+              backgroundOpacity: 0,
+              padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
+              textStyle: _style,
+              theme: _theme,
+              cursorType: TerminalCursorType.verticalBar,
+            ),
+          ),
+        ),
+        Positioned.fill(child: GestureDetector(behavior: HitTestBehavior.opaque, onTap: () => _openSession(o))),
+      ]),
+      on: false,
+      name: o.server.name,
+      color: o.server.color,
+    );
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Row(children: [
+          Expanded(child: first ? mine : theirs),
+          const SizedBox(width: 6),
+          Expanded(child: first ? theirs : mine),
+        ]),
+      ),
+    );
+  }
+
+  Widget _framed(Widget child, {required bool on, required String name, required String color}) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: on ? cAccent.withValues(alpha: .6) : cLine),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(children: [
+          Container(
+            height: 26,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            color: const Color(0x08FFFFFF),
+            child: Row(children: [
+              Container(width: 8, height: 8, decoration: BoxDecoration(color: hexColor(color), shape: BoxShape.circle)),
+              const SizedBox(width: 8),
+              Expanded(child: Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: on ? cText : cMuted))),
+            ]),
+          ),
+          Expanded(child: child),
+        ]),
+      );
+
+  TerminalStyle get _style => TerminalStyle(fontSize: AppState.I.fontSize, fontFamily: 'JetBrainsMono', height: 1.2);
+
+  Widget _pane() {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Listener(
+        onPointerDown: _pointerDown,
+        onPointerUp: _pointerUp,
+        child: Stack(children: [
+          Positioned.fill(
+            child: TerminalView(
+              s.term,
+              controller: _tc,
+              focusNode: _focus,
+              autofocus: true,
+              // no suggestions / composing: one Enter press is enough on Samsung & Gboard
+              keyboardType: TextInputType.visiblePassword,
+              backgroundOpacity: 0,
+              padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
+              textStyle: _style,
+              theme: _theme,
+              cursorType: TerminalCursorType.verticalBar,
+            ),
+          ),
+          if (_gesture)
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onPanStart: (_) {
+                  _pan = Offset.zero;
+                  _axis = 0;
+                },
+                onPanUpdate: _onPan,
+                onTap: () => _focus.requestFocus(),
+              ),
+            ),
+          if (_gesture)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                    color: cAccent.withValues(alpha: .18), borderRadius: BorderRadius.circular(10), border: Border.all(color: cAccent.withValues(alpha: .5))),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  const Icon(Icons.swipe_rounded, size: 16, color: cAccent),
+                  const SizedBox(width: 6),
+                  Text(t('gestureOn'), style: const TextStyle(fontSize: 12, color: cAccent, fontFamily: 'Vazirmatn')),
+                ]),
+              ),
+            ),
+        ]),
+      ),
+    );
+  }
+
+  // same colors as the Windows app's terminal
   static const _theme = TerminalTheme(
-    cursor: Color(0xFFFF9F1C),
-    selection: Color(0x5522C38E),
-    foreground: Color(0xFFE8E8E8),
-    background: Color(0xFF0E0E0E),
-    black: Color(0xFF1C1C1C),
-    red: Color(0xFFFF5B6E),
-    green: Color(0xFF2FD27A),
-    yellow: Color(0xFFFFC857),
-    blue: Color(0xFF4DA3FF),
-    magenta: Color(0xFFC77DFF),
-    cyan: Color(0xFF22D3C5),
-    white: Color(0xFFE8E8E8),
-    brightBlack: Color(0xFF6B7287),
-    brightRed: Color(0xFFFF7A8A),
-    brightGreen: Color(0xFF5EE59A),
-    brightYellow: Color(0xFFFFD98A),
-    brightBlue: Color(0xFF7CBCFF),
-    brightMagenta: Color(0xFFD9A3FF),
-    brightCyan: Color(0xFF5BE7DB),
+    cursor: Color(0xFF22C38E),
+    selection: Color(0x4D22C38E),
+    foreground: Color(0xFFD8DEE9),
+    background: Color(0xFF0B0E13),
+    black: Color(0xFF1C212B),
+    red: Color(0xFFFF6B7A),
+    green: Color(0xFF3DDC97),
+    yellow: Color(0xFFF5C46B),
+    blue: Color(0xFF5AA9FF),
+    magenta: Color(0xFFC792EA),
+    cyan: Color(0xFF4FD1C5),
+    white: Color(0xFFD8DEE9),
+    brightBlack: Color(0xFF5F6878),
+    brightRed: Color(0xFFFF8B98),
+    brightGreen: Color(0xFF6FF0B5),
+    brightYellow: Color(0xFFFFDC8A),
+    brightBlue: Color(0xFF82C0FF),
+    brightMagenta: Color(0xFFDDB3FF),
+    brightCyan: Color(0xFF7FE7DC),
     brightWhite: Color(0xFFFFFFFF),
     searchHitBackground: Color(0xFFFFC857),
     searchHitBackgroundCurrent: Color(0xFFFF9F1C),
@@ -424,6 +517,17 @@ class _TerminalScreenState extends State<TerminalScreen> implements SessUI {
           ),
           const SizedBox(width: 10),
           _round(const Icon(Icons.add_rounded, size: 26, color: cText), _newSession),
+          if (_wide && Sess.open.length > 1) ...[
+            const SizedBox(width: 10),
+            _round(
+              Icon(Icons.vertical_split_rounded, size: 22, color: AppState.I.split ? cAccent : cText),
+              () {
+                AppState.I.setSplit(!AppState.I.split);
+                toast(AppState.I.split ? t('splitOn') : t('splitOff'));
+                _re();
+              },
+            ),
+          ],
           const SizedBox(width: 10),
           _round(const Icon(Icons.grid_view_rounded, size: 22, color: cText), _sessions),
         ]),
