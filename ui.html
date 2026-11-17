@@ -30,7 +30,7 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
 h1{font-size:18px;font-weight:700}
 .sub{color:var(--muted);font-size:12.5px;margin-top:1px}
 
-.grid{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-content:start;padding:4px 2px 8px;margin:0 -2px}
+.grid{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;align-content:start;padding:4px 2px 8px;margin:0 -2px}
 .grid::-webkit-scrollbar{width:8px}.grid::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
 
 .card{position:relative;height:200px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);
@@ -170,6 +170,12 @@ header{cursor:default}
   white-space:pre-wrap;word-break:break-all;max-height:170px;overflow:auto;user-select:text}
 .res pre:empty::before{content:"—";color:var(--dim)}
 .mini{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.15);border-top-color:var(--accent);animation:sp .8s linear infinite}
+.rz{position:fixed;z-index:200}
+.rz[data-e=n],.rz[data-e=s]{left:12px;right:12px;height:5px;cursor:ns-resize}.rz[data-e=n]{top:0}.rz[data-e=s]{bottom:0}
+.rz[data-e=e],.rz[data-e=w]{top:12px;bottom:12px;width:5px;cursor:ew-resize}.rz[data-e=e]{right:0}.rz[data-e=w]{left:0}
+.rz[data-e=ne],.rz[data-e=nw],.rz[data-e=se],.rz[data-e=sw]{width:12px;height:12px}
+.rz[data-e=ne]{top:0;right:0;cursor:nesw-resize}.rz[data-e=sw]{bottom:0;left:0;cursor:nesw-resize}
+.rz[data-e=nw]{top:0;left:0;cursor:nwse-resize}.rz[data-e=se]{bottom:0;right:0;cursor:nwse-resize}
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:14px 0 4px;font-size:13px}
 
 /* ---------- view modes: tiles (default) · compact · list */
@@ -179,7 +185,7 @@ header{cursor:default}
 .vsw svg{width:14px;height:14px}
 .txt{display:contents}
 .key:empty{display:none}
-.grid.v-compact{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.grid.v-compact{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px}
 .v-compact .card{height:74px;flex-direction:row;justify-content:flex-start;gap:11px;padding:0 12px;border-radius:14px}
 .v-compact .avatar{width:42px;height:42px;border-radius:12px;flex:none}
 .v-compact .avatar svg{width:19px;height:19px}
@@ -301,6 +307,7 @@ html[dir=rtl] .fr .nm,html[dir=rtl] .xf .xn,html[dir=rtl] .fmtitle span{text-ali
 </style>
 </head>
 <body>
+<div class="rz" data-e="n"></div><div class="rz" data-e="s"></div><div class="rz" data-e="e"></div><div class="rz" data-e="w"></div><div class="rz" data-e="ne"></div><div class="rz" data-e="nw"></div><div class="rz" data-e="se"></div><div class="rz" data-e="sw"></div>
 <div class="app">
   <header>
     <div class="brand">
@@ -385,7 +392,7 @@ const L={
   sameWindow:'اگه Terminal بازه، به‌صورت تب جدید باز بشه',autoClose:'بعد از اتصال، این پنجره بسته بشه',
   mEdit:'ویرایش',mKey:'ورود بدون رمز (نصب کلید)',mUp:'بیار جلوتر',mDown:'ببر عقب‌تر',mDel:'حذف',
   checking:'در حال بررسی…',down:'در دسترس نیست',ms:'{n} میلی‌ثانیه',noPass:'بدون رمز',noPassTip:'ورود بدون رمز فعاله',
-  newServer:'سرور جدید',vTiles:'کاشی بزرگ',vCompact:'کاشی کوچک',vList:'لیست',empty:'هنوز سروری اضافه نکردی. روی «سرور جدید» بزن.',connecting:'در حال اتصال به «{n}»…',
+  newServer:'سرور جدید',autoSize:'اندازهٔ پنجره برگشت به حالت خودکار',vTiles:'کاشی بزرگ',vCompact:'کاشی کوچک',vList:'لیست',empty:'هنوز سروری اضافه نکردی. روی «سرور جدید» بزن.',connecting:'در حال اتصال به «{n}»…',
   editServer:'ویرایش سرور',name:'اسم',namePh:'مثلاً Germany',user:'یوزر',host:'آدرس (IP یا دامنه)',port:'پورت',
   passOpt:'رمز سرور (اختیاری)',passOptNote:'اگه بنویسی، یه بار برای نصب کلید SSH استفاده میشه تا دفعه‌های بعد رمز نخواد. خود رمز هیچ‌جا ذخیره نمیشه.',
   tabColor:'رنگ تب',add:'اضافه کن',save:'ذخیره',cancel:'لغو',added:'سرور اضافه شد',saved:'ذخیره شد',
@@ -423,7 +430,7 @@ const L={
   sameWindow:'Open as a new tab if Terminal is already open',autoClose:'Close this window after connecting',
   mEdit:'Edit',mKey:'Passwordless login (install key)',mUp:'Move earlier',mDown:'Move later',mDel:'Delete',
   checking:'Checking…',down:'Unreachable',ms:'{n} ms',noPass:'No password',noPassTip:'Passwordless login is set up',
-  newServer:'New server',vTiles:'Large tiles',vCompact:'Small tiles',vList:'List',empty:'No servers yet. Click “New server” to add one.',connecting:'Connecting to “{n}”…',
+  newServer:'New server',autoSize:'Window size is automatic again',vTiles:'Large tiles',vCompact:'Small tiles',vList:'List',empty:'No servers yet. Click “New server” to add one.',connecting:'Connecting to “{n}”…',
   editServer:'Edit server',name:'Name',namePh:'e.g. Germany',user:'User',host:'Address (IP or domain)',port:'Port',
   passOpt:'Server password (optional)',passOptNote:'If you enter it, it is used once to install an SSH key so you won’t need a password next time. The password itself is never saved.',
   tabColor:'Tab color',add:'Add',save:'Save',cancel:'Cancel',added:'Server added',saved:'Saved',
@@ -513,9 +520,11 @@ function render(){
 const VIEWS={tiles:{cols:3,h:200,gap:16,max:3},compact:{cols:4,h:74,gap:10,max:5},list:{cols:1,h:50,gap:6,max:9}};
 let view='tiles'; try{ const v=localStorage.getItem('view'); if(VIEWS[v]) view=v; }catch(e){}
 $('#vsw').onclick=e=>{ const b=e.target.closest('button'); if(!b||b.dataset.v===view) return; view=b.dataset.v; try{ localStorage.setItem('view',view); }catch(x){} render(); };
-let lastFit='';
+let lastFit='', resizing=false;
 function fit(big){
-  if(fm){ if(lastFit==='fm') return; lastFit='fm'; try{ window.fitWindow(1080,720,window.devicePixelRatio||1); }catch(e){} return; }
+  if(resizing) return;
+  const ws=st.win||{};
+  if(fm){ const fs=ws.fm||{w:1080,h:720}, k='fm'+fs.w+'x'+fs.h; if(lastFit===k) return; lastFit=k; try{ window.fitWindow(fs.w,fs.h,window.devicePixelRatio||1); }catch(e){} return; }
   const V=VIEWS[view]||VIEWS.tiles, n=st.servers.length+1, rows=Math.min(V.max,Math.ceil(n/V.cols));
   const app=getComputedStyle(document.querySelector('.app'));
   const hdr=document.querySelector('header'), ftr=document.querySelector('footer');
@@ -523,9 +532,14 @@ function fit(big){
   let h=parseFloat(app.paddingTop)+parseFloat(app.paddingBottom)+hdr.offsetHeight+18+gridH+ftr.offsetHeight+6+4;
   if(big||$('#scrim').classList.contains('show')&&$('#modal').classList.contains('wide')) h=Math.max(h,660);
   else if($('#scrim').classList.contains('show')) h=Math.max(h,560);
-  const key=Math.round(h)+'';
+  let w=800;
+  if(ws.main){ // the user picked a size: keep it (only grow while a dialog needs the room)
+    const need=$('#scrim').classList.contains('show')?($('#modal').classList.contains('wide')||big?660:560):0;
+    w=ws.main.w; h=Math.max(ws.main.h,need);
+  }
+  const key=w+'x'+Math.round(h);
   if(key===lastFit) return; lastFit=key;
-  try{ window.fitWindow(800,Math.round(h),window.devicePixelRatio||1); }catch(e){}
+  try{ window.fitWindow(w,Math.round(h),window.devicePixelRatio||1); }catch(e){}
 }
 
 async function load(){ try{ st=await window.getState(); }catch(e){} if(st.lang&&st.lang!==lang){ lang=st.lang; } applyLang(); render(); }
@@ -723,6 +737,19 @@ function dragify(hdr){
   hdr.addEventListener('pointerup',end); hdr.addEventListener('pointercancel',end);
 }
 dragify(document.querySelector('header')); dragify($('#fmHead')); dragify($('#edHead'));
+document.querySelectorAll('.rz').forEach(el=>{
+  let rs=null, raf=0, last=null;
+  el.addEventListener('pointerdown',e=>{ if(e.button!==0) return; e.preventDefault(); rs={x:e.screenX,y:e.screenY,id:e.pointerId}; resizing=true; el.setPointerCapture(e.pointerId); try{ window.dragStart(); }catch(x){} });
+  el.addEventListener('pointermove',e=>{ if(!rs||e.pointerId!==rs.id) return; last=[e.screenX-rs.x,e.screenY-rs.y];
+    if(!raf) raf=requestAnimationFrame(()=>{ raf=0; if(last){ try{ window.resizeMove(el.dataset.e,last[0],last[1],window.devicePixelRatio||1); }catch(x){} } }); });
+  const end=async e=>{ if(!rs) return; try{ el.releasePointerCapture(rs.id); }catch(x){} const moved=last&&(last[0]||last[1]); rs=null; last=null; resizing=false;
+    if(moved){ try{ st.win=await window.resizeEnd(fm?'fm':'main',false,window.devicePixelRatio||1); lastFit=''; }catch(x){} } };
+  el.addEventListener('pointerup',end); el.addEventListener('pointercancel',end);
+});
+// double-click on an empty part of a title bar: back to the automatic size
+document.querySelectorAll('header,#fmHead').forEach(h=>h.addEventListener('dblclick',async e=>{
+  if(e.target.closest('button,a,input,.lang')) return; const v=fm?'fm':'main'; if(!(st.win&&st.win[v])) return;
+  try{ st.win=await window.resizeEnd(v,true,window.devicePixelRatio||1); lastFit=''; fit(); toast(t('autoSize')); }catch(x){} }));
 window.addEventListener('resize',()=>{ lastFit=''; });
 $('#tSame').onclick=async()=>{ st.sameWindow=!st.sameWindow; render(); await window.setOption('sameWindow',st.sameWindow); };
 $('#tClose').onclick=async()=>{ st.autoClose=!st.autoClose; render(); await window.setOption('autoClose',st.autoClose); };
@@ -1311,7 +1338,7 @@ let upd=null;
 function updDialog(){
   if(!upd) return;
   modal(`<h3>${t('upTitle')} · v${esc(upd.latest)}</h3><p>${t('upMsg','v'+esc(upd.current))}</p>
-    ${upd.notes?`<div class="notes">${esc(upd.notes)}</div>`:''}
+    ${upd.notes?`<div class="notes">${esc(upd.notes.replace(/\*\*|`/g,''))}</div>`:''}
     <div class="row"><button class="btn primary" id="uGo">${t('upNow')}</button><button class="btn" id="uNo">${t('upLater')}</button></div>`);
   $('#uGo').onclick=()=>{ $('#uGo').disabled=true; $('#uGo').textContent=t('upBusy'); window.doUpdate(upd.url); };
   $('#uNo').onclick=closeModal;

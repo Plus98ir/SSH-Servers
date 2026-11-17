@@ -15,7 +15,8 @@ Click a card → `ssh` opens straight in Windows Terminal. Also: split/tab multi
 - `bind.go` every function the page calls (connect, openSplit/openTabs, trustHost, installKey, runMulti…)
 - `sshx.go` known_hosts check/repair, key install, ping
 - `launch.go` Windows Terminal command lines (single / tabs / split grid)
-- `window.go` frameless window, auto-size, drag
+- `window.go` frameless window, auto-size, drag, edge resize (size kept in `cfg.Win`, per view)
+- `update.go` update check (site `dl/windows.json` first, GitHub API fallback) + self-update
 - `ui.html` the whole UI (strings in `L.fa` / `L.en`)
 - `sftp.go` built-in SFTP file manager (pkg/sftp): one session per server (key, else password kept in memory only; auto-reconnect + keepalive), list/mkdir/touch/rename/remove/chmod/read/write via `fsDo` → `onFs`, downloads straight to `%USERPROFILE%\Downloads`, uploads streamed from the page in 1 MB base64 chunks (`upStart`/`upChunk`/`upEnd`, flow control via `onUpAck`). `sftp_test.go` runs it against an in-process SSH+SFTP server.
 - `sync.go` Gist sync: merge rules, AES-GCM, GitHub API, sync link + QR, "Sign in with GitHub" (device flow, `githubClientID`)
@@ -28,7 +29,7 @@ Click a card → `ssh` opens straight in Windows Terminal. Also: split/tab multi
 export GOPROXY=direct GOSUMDB=off GOFLAGS=-mod=mod GOTOOLCHAIN=local
 GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "-H windowsgui -s -w -X main.appBuild=$(git rev-list --count HEAD)" -o "SSH Servers.exe" .
 ```
-Windows release: tag `v*` + `gh release create` with `SSH.Servers.exe` (fixed name, used by the site and the in-app update) and `SSH-Servers-v<ver>-build<N>.exe`. The release-triggered Pages run fails (github-pages environment only allows main), so after a release run `gh workflow run pages.yml --ref main`.
+Windows release: tag `v*` + `gh release create` with `SSH.Servers.exe` (fixed name, used by the site and the in-app update) and `SSH-Servers-v<ver>-build<N>.exe`. A release starts pages.yml on the tag, which only hands off to a run on main (the github-pages environment deploys from main only); that run also writes `dl/windows.json` (version + notes), which the app's update check reads first.
 golang.org/x/* are fetched from their GitHub mirrors via `replace` in go.mod (golang.org itself is blocked). Go 1.24 → x/crypto v0.41.0.
 
 - `mobile/` Android app (Flutter): built-in SSH terminal (dartssh2 + xterm), own ed25519 key per phone (secure storage), TOFU host keys, password fallback + key install, GitHub device-flow sign-in (no Worker needed natively), QR scan, same sync format (lib/sync.dart). APK built only by GitHub Actions (`.github/workflows/android.yml`; pub.dev is blocked on this PC). `android/` is generated in CI + `tool/patch_android.py`. Signing: PKCS12 `%USERPROFILE%\.android-keys\ssh-servers.p12` (+ `ssh-servers-keystore.txt`), repo secrets KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS — never regenerate. Tag `android-v*` → release with SSH-Servers.apk (`make_latest: false`, so `releases/latest` stays the Windows `v*` release). Downloads (2026-11-15): page + README link https://corenetbase.com/SSH-Servers/dl/SSH.Servers.exe and dl/SSH-Servers.apk; `.github/workflows/pages.yml` (Pages build_type=workflow) copies the exe from the latest v* release and the APK from the newest android-v* release on every docs push, published release, or android-v* build (android.yml dispatches it). Never link github.com/…/releases/download or api.github.com from pages: blocked/filtered in Iran without VPN. Test on Sadeq's A55 via wireless adb (`adb mdns services`).

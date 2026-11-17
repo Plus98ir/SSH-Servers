@@ -58,6 +58,13 @@ type config struct {
 	Sync        *syncCfg         `json:"sync,omitempty"`
 	UpdateCheck int64            `json:"updateCheck,omitempty"`
 	Update      *updateInfo      `json:"update,omitempty"`
+	// window size the user picked (CSS px) per view ("main", "fm"); device-only, never synced
+	Win map[string]winSize `json:"win,omitempty"`
+}
+
+type winSize struct {
+	W int `json:"w"`
+	H int `json:"h"`
 }
 
 var (

@@ -14,13 +14,24 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
+  # A release run starts on the tag, but the github-pages environment only deploys from main:
+  # hand it over to a run on main instead.
+  handoff:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml -R "$GITHUB_REPOSITORY" --ref main
   build:
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -32,11 +43,14 @@ jobs:
           mkdir -p _site/dl
           # Windows exe = the "latest" release (v*); the APK = the newest android-v* release
           gh release download -R "$GITHUB_REPOSITORY" -p SSH.Servers.exe -D _site/dl
+          # what the Windows app's update check reads (update.go checkSite)
+          gh release view -R "$GITHUB_REPOSITORY" --json tagName,body             -q '{version: (.tagName | ltrimstr("v")), notes: .body, file: "SSH.Servers.exe"}' > _site/dl/windows.json
+          cat _site/dl/windows.json
           tag=$(gh release list -R "$GITHUB_REPOSITORY" --exclude-drafts --exclude-pre-releases -L 50 \
             --json tagName -q '[.[].tagName | select(startswith("android-v"))][0]')
           gh release download "$tag" -R "$GITHUB_REPOSITORY" -p SSH-Servers.apk -D _site/dl
           ls -l _site/dl
-          test -s _site/dl/SSH.Servers.exe && test -s _site/dl/SSH-Servers.apk
+          test -s _site/dl/SSH.Servers.exe && test -s _site/dl/SSH-Servers.apk && test -s _site/dl/windows.json
       - uses: actions/upload-pages-artifact@v3
   deploy:
     needs: build

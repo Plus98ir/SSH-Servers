@@ -3,6 +3,7 @@
 package main
 
 import (
+	"strings"
 	"syscall"
 	"unsafe"
 )
@@ -142,6 +143,35 @@ func dragMove(dx, dy, dpr float64) {
 	x := dragOrigin.L + int32(dx*s)
 	y := dragOrigin.T + int32(dy*s)
 	pSetWindowPos.Call(mainHwnd, 0, uintptr(x), uintptr(y), 0, 0, swpNoSize|swpNoZOrder|swpNoActivate)
+}
+
+// resizeMove resizes from the rect saved by dragStart; edge is any of n/s/e/w.
+func resizeMove(edge string, dx, dy, dpr float64) {
+	s := dpiScale(dpr)
+	r := dragOrigin
+	ddx, ddy := int32(dx*s), int32(dy*s)
+	mw, mh := int32(560*s), int32(380*s)
+	wa := workArea()
+	if strings.Contains(edge, "e") {
+		r.R = min(max(r.R+ddx, r.L+mw), wa.R)
+	}
+	if strings.Contains(edge, "w") {
+		r.L = max(min(r.L+ddx, r.R-mw), wa.L)
+	}
+	if strings.Contains(edge, "s") {
+		r.B = min(max(r.B+ddy, r.T+mh), wa.B)
+	}
+	if strings.Contains(edge, "n") {
+		r.T = max(min(r.T+ddy, r.B-mh), wa.T)
+	}
+	pSetWindowPos.Call(mainHwnd, 0, uintptr(r.L), uintptr(r.T), uintptr(r.R-r.L), uintptr(r.B-r.T), swpNoZOrder|swpNoActivate)
+}
+
+// windowCSSSize is the window size in CSS px.
+func windowCSSSize(dpr float64) winSize {
+	s := dpiScale(dpr)
+	r := windowRect()
+	return winSize{W: int(float64(r.R-r.L)/s + 0.5), H: int(float64(r.B-r.T)/s + 0.5)}
 }
 
 func minimizeWindow() { pShowWindow.Call(mainHwnd, 6) } // SW_MINIMIZE

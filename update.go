@@ -19,9 +19,12 @@ import (
 )
 
 const (
-	appVersion  = "1.1.1"
+	appVersion  = "1.1.2"
 	releasesAPI = "https://api.github.com/repos/Plus98ir/SSH-Servers/releases?per_page=30"
 	exeAsset    = "SSH.Servers.exe"
+	// the site mirrors the latest release (pages.yml): reachable in Iran without a VPN, GitHub isn't
+	siteDL   = "https://corenetbase.com/SSH-Servers/dl/"
+	sitePage = "https://corenetbase.com/SSH-Servers/"
 )
 
 // appBuild is the build number, set at build time: -ldflags "-X main.appBuild=N" (N = git commit count).
@@ -65,7 +68,48 @@ func newerVer(a, b string) bool { // a > b
 	return false
 }
 
+// checkUpdate asks the site first (dl/windows.json), then GitHub.
 func checkUpdate() updateInfo {
+	if in := checkSite(); in.Err == "" {
+		return in
+	}
+	return checkGitHub()
+}
+
+func checkSite() updateInfo {
+	in := updateInfo{Current: appVersion}
+	req, _ := http.NewRequest("GET", siteDL+"windows.json?t="+strconv.FormatInt(time.Now().Unix(), 10), nil)
+	req.Header.Set("User-Agent", "SSH-Servers")
+	req.Header.Set("Cache-Control", "no-cache")
+	res, err := (&http.Client{Timeout: 15 * time.Second}).Do(req)
+	if err != nil {
+		in.Err = err.Error()
+		return in
+	}
+	defer res.Body.Close()
+	if res.StatusCode != 200 {
+		in.Err = res.Status
+		return in
+	}
+	var v struct {
+		Version string `json:"version"`
+		Notes   string `json:"notes"`
+		File    string `json:"file"`
+	}
+	if err := json.NewDecoder(io.LimitReader(res.Body, 1<<20)).Decode(&v); err != nil || v.Version == "" {
+		in.Err = "bad windows.json"
+		return in
+	}
+	if v.File == "" || strings.ContainsAny(v.File, `/\?#`) {
+		v.File = exeAsset
+	}
+	in.Latest = strings.TrimPrefix(v.Version, "v")
+	in.Notes, in.Page, in.URL = v.Notes, sitePage, siteDL+v.File
+	in.Newer = newerVer(in.Latest, appVersion)
+	return in
+}
+
+func checkGitHub() updateInfo {
 	in := updateInfo{Current: appVersion}
 	req, _ := http.NewRequest("GET", releasesAPI, nil)
 	req.Header.Set("Accept", "application/vnd.github+json")
@@ -110,14 +154,17 @@ func checkUpdate() updateInfo {
 
 // selfUpdate downloads the new exe, swaps it in (a running exe can be renamed) and restarts.
 func selfUpdate(url string) error {
-	if !strings.HasPrefix(url, "https://github.com/Plus98ir/SSH-Servers/") {
+	if !strings.HasPrefix(url, "https://github.com/Plus98ir/SSH-Servers/") && !strings.HasPrefix(url, siteDL) {
 		return errors.New("bad url")
 	}
 	exe, err := os.Executable()
 	if err != nil {
 		return err
 	}
-	res, err := (&http.Client{Timeout: 5 * time.Minute}).Get(url)
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("User-Agent", "SSH-Servers")
+	req.Header.Set("Cache-Control", "no-cache")
+	res, err := (&http.Client{Timeout: 5 * time.Minute}).Do(req)
 	if err != nil {
 		return err
 	}
@@ -132,6 +179,9 @@ func selfUpdate(url string) error {
 	}
 	n, err := io.Copy(f, res.Body)
 	f.Close()
+	if err == nil && n >= 1<<20 && !isExe(tmp) {
+		err = errors.New("downloaded file is not a Windows program")
+	}
 	if err != nil || n < 1<<20 {
 		os.Remove(tmp)
 		if err == nil {
@@ -157,6 +207,17 @@ func selfUpdate(url string) error {
 	}
 	w.Dispatch(closeWindow)
 	return nil
+}
+
+func isExe(p string) bool {
+	f, err := os.Open(p)
+	if err != nil {
+		return false
+	}
+	defer f.Close()
+	b := make([]byte, 2)
+	_, err = io.ReadFull(f, b)
+	return err == nil && b[0] == 'M' && b[1] == 'Z'
 }
 
 // cleanupOld removes the previous exe left by a self-update.

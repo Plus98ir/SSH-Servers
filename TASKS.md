@@ -2,7 +2,7 @@
 _Updated 2026-11-17_
 
 ## Now
-- [ ] LATER (Sadeq 2026-11-15: "later, not now"; don't bring it up unless he asks): the exe's own update check (update.go) still uses api.github.com + GitHub downloads, both blocked in Iran without VPN. Fix = read corenetbase.com/SSH-Servers/dl/ instead; needs a new exe release (v1.1.1), so only with his OK.
+- Windows v1.1.2 released 2026-11-17: in-app update reads corenetbase.com/SSH-Servers/dl/windows.json + dl/SSH.Servers.exe (GitHub only as fallback); window resizable from any edge, size remembered per view (main / file manager) in servers.json `win`, double-click the title bar = automatic size again.
 - Windows v1.1.1 released 2026-11-17: fix freeze/close on save with sync on; card views (large tiles / small tiles / list, switch in the footer, per device). Exe name now carries version + build (build = git commit count, `-X main.appBuild`).
 
 ## Next
@@ -11,7 +11,7 @@ _Updated 2026-11-17_
 - Next version upgrade (after 5 builds): bump `appVersion` (update.go) / `version:` (mobile/pubspec.yaml, build number must grow), tag `v*` (Windows) or `android-v*` (Android), update the APK link in README.md / README.fa.md
 
 ## Version count (5 builds = one upgrade)
-- Windows: 0/5 since v1.1.1 (2026-11-17)
+- Windows: 0/5 since v1.1.2 (2026-11-17)
 - Android: 0/5 since 1.0.0
 
 ## Later

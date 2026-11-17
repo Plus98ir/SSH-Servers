@@ -15,11 +15,12 @@ import (
 )
 
 type uiState struct {
-	Servers    []server `json:"servers"`
-	SameWindow bool     `json:"sameWindow"`
-	AutoClose  bool     `json:"autoClose"`
-	WTFound    bool     `json:"wtFound"`
-	Lang       string   `json:"lang"`
+	Servers    []server           `json:"servers"`
+	SameWindow bool               `json:"sameWindow"`
+	AutoClose  bool               `json:"autoClose"`
+	WTFound    bool               `json:"wtFound"`
+	Lang       string             `json:"lang"`
+	Win        map[string]winSize `json:"win"`
 }
 
 type changedItem struct {
@@ -163,7 +164,7 @@ func bindAll(hwnd uintptr) {
 		defer mu.Unlock()
 		list := make([]server, len(cfg.Servers))
 		copy(list, cfg.Servers)
-		return uiState{Servers: list, SameWindow: cfg.SameWindow, AutoClose: cfg.AutoClose, WTFound: wtPath() != "", Lang: cfg.Lang}
+		return uiState{Servers: list, SameWindow: cfg.SameWindow, AutoClose: cfg.AutoClose, WTFound: wtPath() != "", Lang: cfg.Lang, Win: cfg.Win}
 	})
 
 	w.Bind("setLang", func(l string) {
@@ -481,6 +482,25 @@ func bindAll(hwnd uintptr) {
 	w.Bind("fitWindow", func(cw, ch int, dpr float64) { fitWindow(cw, ch, dpr) })
 	w.Bind("dragStart", func() { dragStart() })
 	w.Bind("dragMove", func(dx, dy, dpr float64) { dragMove(dx, dy, dpr) })
+	w.Bind("resizeMove", func(edge string, dx, dy, dpr float64) { resizeMove(edge, dx, dy, dpr) })
+	// resizeEnd remembers the size the user dragged to for this view; size 0 = back to automatic
+	w.Bind("resizeEnd", func(view string, reset bool, dpr float64) map[string]winSize {
+		if view != "main" && view != "fm" {
+			view = "main"
+		}
+		mu.Lock()
+		defer mu.Unlock()
+		if cfg.Win == nil {
+			cfg.Win = map[string]winSize{}
+		}
+		if reset {
+			delete(cfg.Win, view)
+		} else {
+			cfg.Win[view] = windowCSSSize(dpr)
+		}
+		saveConfig()
+		return cfg.Win
+	})
 	w.Bind("minimize", func() { minimizeWindow() })
 	w.Bind("closeApp", func() { closeWindow() })
 }
