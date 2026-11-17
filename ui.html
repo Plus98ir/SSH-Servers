@@ -172,6 +172,48 @@ header{cursor:default}
 .mini{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.15);border-top-color:var(--accent);animation:sp .8s linear infinite}
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:14px 0 4px;font-size:13px}
 
+/* ---------- view modes: tiles (default) · compact · list */
+.vsw{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px}
+.vsw button{border:0;background:transparent;color:var(--muted);width:28px;height:22px;border-radius:7px;cursor:pointer;display:grid;place-items:center}
+.vsw button:hover{color:var(--text)}.vsw button.on{background:rgba(255,255,255,.1);color:var(--text)}
+.vsw svg{width:14px;height:14px}
+.txt{display:contents}
+.key:empty{display:none}
+.grid.v-compact{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.v-compact .card{height:74px;flex-direction:row;justify-content:flex-start;gap:11px;padding:0 12px;border-radius:14px}
+.v-compact .avatar{width:42px;height:42px;border-radius:12px;flex:none}
+.v-compact .avatar svg{width:19px;height:19px}
+.v-compact .avatar .ini{min-width:18px;height:18px;font-size:10px;bottom:-5px;inset-inline-end:-5px;padding:0 4px}
+.v-compact .txt{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.v-compact .name{font-size:14px;max-width:100%;padding-inline-end:14px;text-align:match-parent}
+.v-compact .au{display:none}
+html[dir=rtl] .v-compact .name,html[dir=rtl] .v-compact .addr{text-align:right}
+html[dir=ltr] .v-compact .name,html[dir=ltr] .v-compact .addr{text-align:left}
+.v-compact .addr{font-size:11.5px;max-width:100%}
+.v-compact .addr{text-align:start}
+.v-compact .stats{position:absolute;bottom:7px;inset-inline-end:8px;gap:4px}
+.v-compact .stat{font-size:0;gap:0;padding:3px;background:none}
+.v-compact .kchip{font-size:0;gap:0;padding:3px}
+.v-compact .kchip svg{width:11px;height:11px}
+.v-compact .key,.v-compact .more.fb{display:none}
+.v-compact .more{top:4px;inset-inline-end:4px;width:24px;height:24px}
+.v-compact .more svg{width:15px;height:15px}
+.v-compact .plus,.v-list .plus{width:38px;height:38px;flex:none}
+.v-compact .plus svg,.v-list .plus svg{width:18px;height:18px}
+.grid.v-list{grid-template-columns:1fr;gap:6px}
+.v-list .card{height:50px;flex-direction:row;justify-content:flex-start;gap:12px;padding:0 8px 0 12px;border-radius:12px}
+.v-list .card:hover{transform:none;box-shadow:none}
+.v-list .key{position:static;order:0;width:12px;text-align:center;flex:none}
+.v-list .avatar{order:1;width:32px;height:32px;border-radius:9px;flex:none}
+.v-list .avatar svg{width:16px;height:16px}.v-list .avatar .ini{display:none}
+.v-list .txt{order:2;display:flex;align-items:center;gap:16px;flex:1;min-width:0}
+.v-list .name{font-size:14px;max-width:45%;flex:none;text-align:match-parent}
+.v-list .addr{font-size:12.5px;max-width:none;flex:1;min-width:0;text-align:start}
+.v-list .stats{order:3;flex:none}
+.v-list .more{position:static;order:5;flex:none}.v-list .more.fb{order:4}
+.v-list .plus{width:32px;height:32px}.v-list .plus svg{width:16px;height:16px}
+.v-list .add .label{font-size:13.5px}
+
 /* ---------- file manager (SFTP) */
 .scrim{z-index:50}.menu{z-index:55}.toast{z-index:60}
 .more.fb{inset-inline-end:40px}
@@ -275,6 +317,7 @@ html[dir=rtl] .fr .nm,html[dir=rtl] .xf .xn,html[dir=rtl] .fmtitle span{text-ali
     <div class="toggle" id="tClose"><div class="sw"></div><span data-i18n="autoClose"></span></div>
     <span style="flex:1"></span>
     <button class="updpill" id="updBtn" style="display:none"></button>
+    <div class="vsw" id="vsw"><button data-v="tiles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.8"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.8"/></svg></button><button data-v="compact"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="5" height="5" rx="1.2"/><rect x="9.5" y="3" width="5" height="5" rx="1.2"/><rect x="16" y="3" width="5" height="5" rx="1.2"/><rect x="3" y="9.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/><rect x="16" y="9.5" width="5" height="5" rx="1.2"/><rect x="3" y="16" width="5" height="5" rx="1.2"/><rect x="9.5" y="16" width="5" height="5" rx="1.2"/><rect x="16" y="16" width="5" height="5" rx="1.2"/></svg></button><button data-v="list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></button></div>
     <a class="ver" id="verBtn"></a>
   </footer>
 </div>
@@ -342,7 +385,7 @@ const L={
   sameWindow:'اگه Terminal بازه، به‌صورت تب جدید باز بشه',autoClose:'بعد از اتصال، این پنجره بسته بشه',
   mEdit:'ویرایش',mKey:'ورود بدون رمز (نصب کلید)',mUp:'بیار جلوتر',mDown:'ببر عقب‌تر',mDel:'حذف',
   checking:'در حال بررسی…',down:'در دسترس نیست',ms:'{n} میلی‌ثانیه',noPass:'بدون رمز',noPassTip:'ورود بدون رمز فعاله',
-  newServer:'سرور جدید',empty:'هنوز سروری اضافه نکردی. روی «سرور جدید» بزن.',connecting:'در حال اتصال به «{n}»…',
+  newServer:'سرور جدید',vTiles:'کاشی بزرگ',vCompact:'کاشی کوچک',vList:'لیست',empty:'هنوز سروری اضافه نکردی. روی «سرور جدید» بزن.',connecting:'در حال اتصال به «{n}»…',
   editServer:'ویرایش سرور',name:'اسم',namePh:'مثلاً Germany',user:'یوزر',host:'آدرس (IP یا دامنه)',port:'پورت',
   passOpt:'رمز سرور (اختیاری)',passOptNote:'اگه بنویسی، یه بار برای نصب کلید SSH استفاده میشه تا دفعه‌های بعد رمز نخواد. خود رمز هیچ‌جا ذخیره نمیشه.',
   tabColor:'رنگ تب',add:'اضافه کن',save:'ذخیره',cancel:'لغو',added:'سرور اضافه شد',saved:'ذخیره شد',
@@ -380,7 +423,7 @@ const L={
   sameWindow:'Open as a new tab if Terminal is already open',autoClose:'Close this window after connecting',
   mEdit:'Edit',mKey:'Passwordless login (install key)',mUp:'Move earlier',mDown:'Move later',mDel:'Delete',
   checking:'Checking…',down:'Unreachable',ms:'{n} ms',noPass:'No password',noPassTip:'Passwordless login is set up',
-  newServer:'New server',empty:'No servers yet. Click “New server” to add one.',connecting:'Connecting to “{n}”…',
+  newServer:'New server',vTiles:'Large tiles',vCompact:'Small tiles',vList:'List',empty:'No servers yet. Click “New server” to add one.',connecting:'Connecting to “{n}”…',
   editServer:'Edit server',name:'Name',namePh:'e.g. Germany',user:'User',host:'Address (IP or domain)',port:'Port',
   passOpt:'Server password (optional)',passOptNote:'If you enter it, it is used once to install an SSH key so you won’t need a password next time. The password itself is never saved.',
   tabColor:'Tab color',add:'Add',save:'Save',cancel:'Cancel',added:'Server added',saved:'Saved',
@@ -415,6 +458,7 @@ function applyLang(){
   document.title=t('title');
   document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
   document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
+  document.querySelectorAll('#vsw button').forEach(b=>b.title=t({tiles:'vTiles',compact:'vCompact',list:'vList'}[b.dataset.v]));
 }
 const grid=$('#grid');
 const COLORS=['#C00000','#E8590C','#F2B705','#008000','#12B886','#1C7ED6','#7048E8','#D6336C','#495057'];
@@ -446,16 +490,18 @@ function render(){
   $('#tSame').classList.toggle('on',st.sameWindow);
   $('#tClose').classList.toggle('on',st.autoClose);
   $('#allBtn').style.display=st.servers.length>1?'':'none';
+  grid.className='grid'+(view==='tiles'?'':' v-'+view);
+  document.querySelectorAll('#vsw button').forEach(b=>b.classList.toggle('on',b.dataset.v===view));
   let h='';
   st.servers.forEach((s,i)=>{
     const c=s.color||'#495057';
     h+=`<div class="card" data-id="${esc(s.id)}" style="animation-delay:${i*25}ms">
-      ${i<9?`<span class="key">${i+1}</span>`:''}
+      <span class="key">${i<9?i+1:''}</span>
       <button class="more" data-more="${esc(s.id)}">${ICON_MORE}</button>
       <button class="more fb" data-files="${esc(s.id)}" title="${t('fmTip')}">${ICON_DIR}</button>
       <div class="avatar" style="background:linear-gradient(140deg,${shade(c,40)},${shade(c,-25)})">${ICON_SRV}<span class="ini">${esc(([...s.name][0]||'?').toUpperCase())}</span></div>
-      <div class="name">${esc(s.name)}</div>
-      <div class="addr">${esc(addr(s))}</div>
+      <div class="txt"><div class="name" dir="auto">${esc(s.name)}</div>
+      <div class="addr">${s.user?`<span class="au">${esc(s.user)}@</span>`:''}${esc(addr({...s,user:''}))}</div></div>
       <div class="stats">${statHTML(s.id)}${s.keyOK?`<span class="kchip" title="${t('noPassTip')}">${ICON_KEY}${t('noPass')}</span>`:''}</div>
     </div>`;
   });
@@ -464,13 +510,16 @@ function render(){
   grid.innerHTML=h;
   fit();
 }
+const VIEWS={tiles:{cols:3,h:200,gap:16,max:3},compact:{cols:4,h:74,gap:10,max:5},list:{cols:1,h:50,gap:6,max:9}};
+let view='tiles'; try{ const v=localStorage.getItem('view'); if(VIEWS[v]) view=v; }catch(e){}
+$('#vsw').onclick=e=>{ const b=e.target.closest('button'); if(!b||b.dataset.v===view) return; view=b.dataset.v; try{ localStorage.setItem('view',view); }catch(x){} render(); };
 let lastFit='';
 function fit(big){
   if(fm){ if(lastFit==='fm') return; lastFit='fm'; try{ window.fitWindow(1080,720,window.devicePixelRatio||1); }catch(e){} return; }
-  const n=st.servers.length+1, rows=Math.min(3,Math.ceil(n/3));
+  const V=VIEWS[view]||VIEWS.tiles, n=st.servers.length+1, rows=Math.min(V.max,Math.ceil(n/V.cols));
   const app=getComputedStyle(document.querySelector('.app'));
   const hdr=document.querySelector('header'), ftr=document.querySelector('footer');
-  const gridH=rows*200+(rows-1)*16+12;
+  const gridH=rows*V.h+(rows-1)*V.gap+12;
   let h=parseFloat(app.paddingTop)+parseFloat(app.paddingBottom)+hdr.offsetHeight+18+gridH+ftr.offsetHeight+6+4;
   if(big||$('#scrim').classList.contains('show')&&$('#modal').classList.contains('wide')) h=Math.max(h,660);
   else if($('#scrim').classList.contains('show')) h=Math.max(h,560);

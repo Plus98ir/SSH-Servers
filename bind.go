@@ -450,7 +450,12 @@ func bindAll(hwnd uintptr) {
 		}
 	})
 
-	w.Bind("appVersion", func() string { return appVersion })
+	w.Bind("appVersion", func() string {
+		if appBuild != "" {
+			return appVersion + " build " + appBuild
+		}
+		return appVersion
+	})
 	w.Bind("checkUpdate", func() {
 		go func() {
 			in := checkUpdate()

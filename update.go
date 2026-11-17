@@ -19,10 +19,13 @@ import (
 )
 
 const (
-	appVersion  = "1.1.0"
+	appVersion  = "1.1.1"
 	releasesAPI = "https://api.github.com/repos/Plus98ir/SSH-Servers/releases?per_page=30"
 	exeAsset    = "SSH.Servers.exe"
 )
+
+// appBuild is the build number, set at build time: -ldflags "-X main.appBuild=N" (N = git commit count).
+var appBuild = ""
 
 type updateInfo struct {
 	Current string `json:"current"`
