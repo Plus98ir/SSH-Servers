@@ -1,5 +1,8 @@
 # SSH Servers — ARCHIVE.md
 
+## 2026-11-23 - Play Protect scan text
+- Site + README: short FA/EN text under the download explaining the Google Play Protect "scan" prompt (app not from Play, Google does not know it yet; the choice is the user's; Scan app = Google checks the file). Sadeq wanted it neutral, not pushy, no "fewer prompts for others". Open-source repos also say the code is on GitHub. Same text in DNS/CF/Reality scanners, SSH-Servers, Saila, XUI Manager.
+
 
 ## 2026-11-15
 - Downloads opened only with VPN (release-assets.githubusercontent.com blocked in Iran; the page also used api.github.com to find the APK). Now served from corenetbase.com/SSH-Servers/dl/ via the Pages workflow; README no longer needs a new APK link per Android release.
