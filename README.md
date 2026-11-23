@@ -38,6 +38,8 @@ One click into your SSH servers on Windows. The same list is on your phone and s
 - **Website:** https://corenetbase.com/SSH-Servers/
 - **Web version (any phone):** https://corenetbase.com/SSH-Servers/app/. Open it and use **Add to Home screen** to install it like an app.
 
+> **Why does Google offer to scan the app?** This app isn't installed from Google Play, so Google doesn't know it yet and offers to check it before install. This happens with every app published outside Play. It's your choice: if you tap **Scan app**, Google checks the file itself and shows you the result. The app's code is open in this repository for anyone to read.
+
 ## What it does
 
 **On Windows**
